@@ -215,3 +215,4 @@ Hasil audit integritas data pasca eksekusi `php artisan db:seed`:
 
 ## 9. Lisensi & Hak Cipta
 Hak Cipta &copy; 2026 **Galery Property Halal**. Dikembangkan untuk kemaslahatan transaksi properti keluarga muslim tanpa riba.
+                                                                                                               
