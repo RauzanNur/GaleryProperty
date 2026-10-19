@@ -84,6 +84,7 @@ Tujuan: menunjukkan peran admin sebagai penjaga kualitas dan kepatuhan syariah.
 | 5 | **Kelola Data → Akad Digital**, buka salah satu akad | Nomor akad otomatis `AKAD/YYYYMM/XXXX` dan status tanda tangan 3 pihak. |
 | 6 | **Kelola Data → Komisi**, buka salah satu komisi | Total komisi = nilai transaksi × persentase, komisi bersih = total − biaya platform. |
 | 7 | **Kelola Pengguna** | CRUD akun semua peran. Admin juga bisa mengganti kata sandi pengguna yang lupa (lihat [Limitasi](../README.md#f-limitasi-saat-ini)). |
+| 8 | **Kelola Pengguna → Tambah Pengguna Baru**, buka pilihan Peran | Hanya ada Calon Pembeli dan Mitra Agency. Akun Super Admin tidak bisa dibuat atau dinaikkan dari aplikasi. |
 
 ---
 

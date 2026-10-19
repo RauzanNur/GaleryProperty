@@ -73,7 +73,8 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:150'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:150', 'unique:users,email'],
             'phone' => ['nullable', ...User::phoneRules(), 'unique:users,phone'],
-            'role' => ['required', 'string', Rule::in(['admin', 'agency_partner', 'buyer'])],
+            // Admin tidak dapat mendaftarkan akun admin baru
+            'role' => ['required', 'string', Rule::in(['agency_partner', 'buyer'])],
             'status' => ['required', 'string', Rule::in(['active', 'pending', 'suspended'])],
             'password' => ['required', 'string', 'confirmed', Password::defaults()],
         ]);
@@ -120,7 +121,8 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:150'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:150', Rule::unique('users')->ignore($user->id)],
             'phone' => ['nullable', ...User::phoneRules(), Rule::unique('users')->ignore($user->id)],
-            'role' => ['required', 'string', Rule::in(['admin', 'agency_partner', 'buyer'])],
+            // Akun non-admin tidak dapat dinaikkan menjadi admin
+            'role' => ['required', 'string', Rule::in($user->isAdmin() ? ['admin', 'agency_partner', 'buyer'] : ['agency_partner', 'buyer'])],
             'status' => ['required', 'string', Rule::in(['active', 'pending', 'suspended'])],
             'password' => ['nullable', 'string', 'confirmed', Password::defaults()],
         ]);

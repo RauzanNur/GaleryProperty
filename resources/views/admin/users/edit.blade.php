@@ -115,7 +115,9 @@
                             >
                                 <option value="buyer" {{ old('role', $user->role) === 'buyer' ? 'selected' : '' }}>Calon Pembeli (Keluarga Muslim)</option>
                                 <option value="agency_partner" {{ old('role', $user->role) === 'agency_partner' ? 'selected' : '' }}>Mitra Agency Properti</option>
-                                <option value="admin" {{ old('role', $user->role) === 'admin' ? 'selected' : '' }}>Super Admin (Internal)</option>
+                                @if ($user->isAdmin())
+                                    <option value="admin" {{ old('role', $user->role) === 'admin' ? 'selected' : '' }}>Super Admin (Internal)</option>
+                                @endif
                             </select>
                             @if ($user->id === auth()->id())
                                 <p class="text-xs text-amber-600 mt-1">Peran akun sendiri dilindungi dari penurunan hak akses.</p>

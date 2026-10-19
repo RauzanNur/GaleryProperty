@@ -105,8 +105,8 @@
                             >
                                 <option value="buyer" {{ old('role', 'buyer') === 'buyer' ? 'selected' : '' }}>Calon Pembeli (Keluarga Muslim)</option>
                                 <option value="agency_partner" {{ old('role') === 'agency_partner' ? 'selected' : '' }}>Mitra Agency Properti</option>
-                                <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>Super Admin (Internal)</option>
                             </select>
+                            <p class="text-xs text-gray-400 mt-1">Akun Super Admin tidak dapat dibuat dari halaman ini.</p>
                             @error('role')
                                 <p class="text-xs text-rose-600 mt-1.5">{{ $message }}</p>
                             @enderror
