@@ -149,6 +149,14 @@ class CommissionController extends Controller
             'notes' => ['nullable', 'string'],
         ]);
 
+        // Komisi hanya boleh dibuat dari akad yang sah (ditandatangani ketiga pihak)
+        $akad = DigitalAkad::find($validated['digital_akad_id']);
+        if (! $akad->isFullySigned() || $akad->status !== 'signed') {
+            throw ValidationException::withMessages([
+                'digital_akad_id' => 'Akad ini belum berstatus Ditandatangani oleh pembeli, agency, dan developer.',
+            ]);
+        }
+
         $validated['total_commission'] = round($validated['base_transaction_amount'] * $validated['commission_rate'] / 100, 2);
         $validated['net_commission'] = round($validated['total_commission'] - $validated['platform_fee'], 2);
 
@@ -167,14 +175,17 @@ class CommissionController extends Controller
     }
 
     /**
-     * Akad yang belum punya komisi (relasi 1-to-1), ditambah akad milik komisi yang sedang diubah.
+     * Akad sah yang belum punya komisi (relasi 1-to-1), ditambah akad milik komisi yang sedang diubah.
      */
     private function formOptions(?Commission $commission = null): array
     {
         return [
             'akadOptions' => DigitalAkad::with('buyerLead')
                 ->where(function ($q) use ($commission) {
-                    $q->doesntHave('commission');
+                    $q->where(fn ($signed) => $signed
+                        ->doesntHave('commission')
+                        ->where('status', 'signed')
+                        ->whereNotNull(['buyer_signed_at', 'agency_signed_at', 'developer_signed_at']));
                     if ($commission) {
                         $q->orWhere('id', $commission->digital_akad_id);
                     }

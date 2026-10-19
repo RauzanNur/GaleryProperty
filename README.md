@@ -33,7 +33,7 @@ Sebagai wadah terpercaya untuk mencari, menyaring, dan bertransaksi properti hal
 - **Pembayaran terjadi di luar sistem.** Pembayaran properti dan komisi (dari developer ke agency, dipotong biaya platform) dilakukan di luar sistem. Sistem hanya mencatat nilai, status, dan bukti transfernya.
 - **Role developer** baru akan dipertimbangkan pada fase berikutnya, misalnya jika developer perlu memantau listing atau penjualannya sendiri.
 
-> **Catatan implementasi:** saat ini pengajuan listing oleh agency (langkah 1), chat (langkah 3), dan syarat komisi hanya dari akad yang sudah ditandatangani (langkah 6) belum diterapkan di aplikasi. Semua data masih dikelola admin melalui menu **Kelola Data**.
+> **Catatan implementasi:** langkah 1, 2, 3, dan 6 sudah diterapkan di aplikasi (menu **Listing Saya** untuk agency, **Katalog** publik, dan **Chat**). Langkah 4 dan 5 (survei, booking, penerbitan akad) masih dicatat oleh admin melalui menu **Kelola Data**.
 
 ---
 
@@ -70,7 +70,7 @@ Sebagai wadah terpercaya untuk mencari, menyaring, dan bertransaksi properti hal
 
 ### User Story & Acceptance Criteria (MVP)
 
-Satu user story untuk setiap MVP (US-01 sampai US-05, sudah diimplementasi), ditambah story yang belum diimplementasi sesuai [Alur Bisnis](#d-alur-bisnis) (US-06 dan US-07). Pada versi saat ini, seluruh pengelolaan data, termasuk listing properti, dilakukan oleh **Admin** melalui menu **Kelola Data**.
+Satu user story untuk setiap MVP (US-01 sampai US-05), ditambah story sesuai [Alur Bisnis](#d-alur-bisnis): chat (US-06) dan pengajuan listing oleh agency (US-07). Semua story sudah diimplementasi dan diuji otomatis (`tests/Feature/AdminDataCrudTest.php` dan `tests/Feature/ListingChatFlowTest.php`).
 
 **Berlaku untuk US-01 sampai US-05:**
 - Hanya akun ber-role `admin` yang bisa mengakses halaman kelola data. Role lain mendapat respons 403, dan pengunjung yang belum login diarahkan ke halaman login.
@@ -99,6 +99,7 @@ Satu user story untuk setiap MVP (US-01 sampai US-05, sudah diimplementasi), dit
 5. Berkas projek dapat diunggah dalam format JPG/PNG/WEBP/PDF dengan ukuran maksimal 5 MB, dengan tipe Foto / Siteplan / Brosur PDF / Dokumen Legalitas.
 6. Setiap projek hanya memiliki satu berkas utama. Menandai berkas baru sebagai utama otomatis melepas status utama berkas lain di projek yang sama.
 7. Saat berkas diganti atau dihapus, file fisik lamanya ikut dihapus dari penyimpanan.
+8. Projek hanya bisa diverifikasi dan ditayangkan di katalog jika sudah memiliki minimal satu berkas **Dokumen Legalitas** (PKS / surat kuasa developer).
 
 #### US-03 — Registrasi Calon Pembeli
 > Sebagai **Admin**, saya ingin mencatat profil kebutuhan calon pembeli dan melacak status prospeknya, agar leads yang kredibel dapat ditindaklanjuti oleh agency.
@@ -126,7 +127,7 @@ Satu user story untuk setiap MVP (US-01 sampai US-05, sudah diimplementasi), dit
 > Sebagai **Admin**, saya ingin sistem menghitung komisi agen secara otomatis dari setiap akad, agar bagi hasil komisi transparan dan bebas salah hitung.
 
 **Acceptance Criteria:**
-1. Setiap komisi terhubung ke tepat satu akad, dan satu akad hanya boleh memiliki satu data komisi.
+1. Setiap komisi terhubung ke tepat satu akad, dan satu akad hanya boleh memiliki satu data komisi. Komisi hanya bisa dibuat dari akad berstatus **Ditandatangani** yang sudah ditandatangani pembeli, agency, dan developer.
 2. Kolom wajib: akad, agency penerima, nilai transaksi, persentase komisi, biaya platform, dan status (Pending / Disetujui / Dibayar / Dibatalkan).
 3. Sistem menghitung otomatis:
    - **Total komisi** = nilai transaksi × persentase komisi
@@ -135,7 +136,7 @@ Satu user story untuk setiap MVP (US-01 sampai US-05, sudah diimplementasi), dit
 5. Jika status **Dibayar** dipilih tanpa tanggal pembayaran, tanggal pembayaran terisi otomatis dengan waktu saat itu.
 6. Bukti transfer dapat diunggah dalam format JPG/PNG/WEBP/PDF dengan ukuran maksimal 5 MB (opsional).
 
-#### US-06 — Chat Calon Pembeli dengan Agency Partner *(belum diimplementasi)*
+#### US-06 — Chat Calon Pembeli dengan Agency Partner
 > Sebagai **Calon Pembeli**, saya ingin bertanya langsung kepada agency partner tentang projek yang saya minati melalui chat di website, agar semua komunikasi tercatat di satu tempat tanpa harus membagikan nomor pribadi.
 
 **Acceptance Criteria:**
@@ -143,12 +144,12 @@ Satu user story untuk setiap MVP (US-01 sampai US-05, sudah diimplementasi), dit
 2. Pengunjung yang belum login diarahkan ke halaman login/registrasi sebelum bisa memulai chat. Hanya akun ber-role `buyer` yang dapat memulai percakapan.
 3. Satu calon pembeli memiliki satu percakapan per projek. Membuka chat untuk projek yang sama melanjutkan percakapan lama beserta riwayat pesannya.
 4. Chat adalah satu-satunya jalur kontak: nomor WhatsApp dan email agency tidak ditampilkan kepada calon pembeli.
-5. Agency partner melihat daftar percakapan yang ditujukan kepadanya saja, lengkap dengan penanda pesan yang belum dibaca, dan dapat membalas.
+5. Agency partner melihat daftar percakapan yang ditujukan kepadanya saja, lengkap dengan penanda pesan yang belum dibaca, dan dapat membalas. Pesan baru muncul otomatis di halaman chat (diperbarui setiap 5 detik) tanpa perlu reload.
 6. Percakapan hanya dapat dibaca oleh calon pembeli dan agency partner yang terlibat. Pengguna lain yang mencoba membukanya mendapat respons 403.
 7. Pesan tidak boleh kosong dan maksimal 1.000 karakter.
 8. Pesan pertama dari calon pembeli otomatis membuat data lead (status **Lead Baru**) yang terhubung ke akun pembeli, projek, dan agency, jika lead tersebut belum ada.
 
-#### US-07 — Pengajuan Listing oleh Agency Partner *(belum diimplementasi)*
+#### US-07 — Pengajuan Listing oleh Agency Partner
 > Sebagai **Agency Partner**, saya ingin mengajukan listing projek dari developer yang saya wakili, agar projek tersebut bisa ditayangkan setelah diverifikasi admin.
 
 **Acceptance Criteria:**
@@ -231,6 +232,10 @@ erDiagram
     PROPERTY_PROJECTS ||--o{ DIGITAL_AKADS : "contracted"
     BUYER_LEADS ||--o{ DIGITAL_AKADS : "signs"
     DIGITAL_AKADS ||--|| COMMISSIONS : "1 to 1"
+    USERS ||--o{ CONVERSATIONS : "buyer"
+    AGENCY_PARTNERS ||--o{ CONVERSATIONS : "replies"
+    PROPERTY_PROJECTS ||--o{ CONVERSATIONS : "about"
+    CONVERSATIONS ||--o{ MESSAGES : "contains"
 ```
 
 ### Rincian Tabel:
@@ -241,6 +246,8 @@ erDiagram
 5. **`buyer_leads`**: PK `id`, FK `user_id`, FK `agency_partner_id`, FK `property_project_id`, `full_name`, `phone`, `budget_min`, `budget_max`, `preferred_location`, `status`.
 6. **`digital_akads`**: PK `id`, `akad_number` (unique), FK `property_project_id` (restrict), FK `buyer_lead_id` (restrict), FK `agency_partner_id`, `akad_type`, `transaction_amount`, `dp_amount`, `tenor_months`, `terms_content`, `buyer_signed_at`, `agency_signed_at`, `developer_signed_at`, `status`.
 7. **`commissions`**: PK `id`, FK `digital_akad_id` (unique, cascade), FK `agency_partner_id` (restrict), `base_transaction_amount`, `commission_rate`, `total_commission`, `platform_fee`, `net_commission`, `status`, `paid_at`.
+8. **`conversations`**: PK `id`, FK `buyer_id` (cascade), FK `agency_partner_id` (cascade), FK `property_project_id` (cascade), `buyer_last_read_message_id`, `agency_last_read_message_id`, `last_message_at`. Unik per (`buyer_id`, `property_project_id`).
+9. **`messages`**: PK `id`, FK `conversation_id` (cascade), FK `sender_id` (cascade), `body`.
 
 ---
 

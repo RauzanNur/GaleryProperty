@@ -7,8 +7,7 @@ use App\Models\AgencyPartner;
 use App\Models\PropertyProject;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class PropertyProjectController extends Controller
@@ -57,7 +56,7 @@ class PropertyProjectController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $this->validateRequest($request);
-        $validated['slug'] = $this->uniqueSlug($validated['title']);
+        $validated['slug'] = PropertyProject::uniqueSlug($validated['title']);
 
         $propertyProject = PropertyProject::create($validated);
 
@@ -93,10 +92,10 @@ class PropertyProjectController extends Controller
      */
     public function update(Request $request, PropertyProject $propertyProject): RedirectResponse
     {
-        $validated = $this->validateRequest($request);
+        $validated = $this->validateRequest($request, $propertyProject);
 
         if ($validated['title'] !== $propertyProject->title) {
-            $validated['slug'] = $this->uniqueSlug($validated['title'], $propertyProject->id);
+            $validated['slug'] = PropertyProject::uniqueSlug($validated['title'], $propertyProject->id);
         }
 
         $propertyProject->update($validated);
@@ -119,53 +118,24 @@ class PropertyProjectController extends Controller
             ->with('success', "Projek '{$title}' telah dihapus (soft delete).");
     }
 
-    private function validateRequest(Request $request): array
+    private function validateRequest(Request $request, ?PropertyProject $propertyProject = null): array
     {
         $validated = $request->validate([
             'agency_partner_id' => ['nullable', 'exists:agency_partners,id'],
-            'title' => ['required', 'string', 'max:200'],
-            'developer_name' => ['required', 'string', 'max:150'],
-            'property_type' => ['required', Rule::in(array_keys(PropertyProject::PROPERTY_TYPES))],
-            'syariah_scheme' => ['required', Rule::in(array_keys(PropertyProject::SYARIAH_SCHEMES))],
-            'price' => ['required', 'numeric', 'min:0', 'max:9999999999999'],
-            'commission_rate' => ['required', 'numeric', 'min:0', 'max:100'],
-            'province' => ['required', 'string', 'max:100'],
-            'city' => ['required', 'string', 'max:100'],
-            'district' => ['nullable', 'string', 'max:100'],
-            'address_detail' => ['required', 'string'],
-            'bedroom' => ['nullable', 'integer', 'min:0', 'max:255'],
-            'bathroom' => ['nullable', 'integer', 'min:0', 'max:255'],
-            'building_area' => ['nullable', 'integer', 'min:0', 'max:65535'],
-            'land_area' => ['nullable', 'integer', 'min:0', 'max:65535'],
-            'description' => ['required', 'string'],
-            'halal_guarantee_notes' => ['nullable', 'string'],
-            'status' => ['required', Rule::in(array_keys(PropertyProject::STATUSES))],
+            ...PropertyProject::validationRules(),
             'is_verified' => ['boolean'],
         ]);
 
         $validated['is_verified'] = $request->boolean('is_verified');
 
-        return $validated;
-    }
-
-    /**
-     * Slug unik dari judul, termasuk terhadap projek yang sudah di-soft delete.
-     */
-    private function uniqueSlug(string $title, ?int $ignoreId = null): string
-    {
-        $base = Str::slug($title) ?: 'projek';
-        $slug = $base;
-        $counter = 2;
-
-        while (PropertyProject::withTrashed()
-            ->where('slug', $slug)
-            ->when($ignoreId, fn ($q) => $q->where('id', '!=', $ignoreId))
-            ->exists()) {
-            $slug = "{$base}-{$counter}";
-            $counter++;
+        // Listing hanya boleh tayang jika sudah ada PKS / surat kuasa developer
+        if ($validated['is_verified'] && ! $propertyProject?->legalDocs()->exists()) {
+            throw ValidationException::withMessages([
+                'is_verified' => 'Listing belum bisa ditayangkan: unggah dulu Dokumen Legalitas (PKS / surat kuasa developer) di menu Berkas Properti.',
+            ]);
         }
 
-        return $slug;
+        return $validated;
     }
 
     private function agencyOptions(): array

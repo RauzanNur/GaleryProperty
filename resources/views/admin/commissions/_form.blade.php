@@ -5,7 +5,7 @@
         :options="$akadOptions"
         :value="$commission->digital_akad_id"
         placeholder="-- Pilih akad --"
-        hint="Satu akad hanya bisa punya satu data komisi."
+        hint="Hanya akad berstatus Ditandatangani oleh ketiga pihak dan belum punya komisi yang bisa dipilih."
         required
     />
     <x-admin.select name="agency_partner_id" label="Agency Penerima" :options="$agencyOptions" :value="$commission->agency_partner_id" placeholder="-- Pilih agency --" required />

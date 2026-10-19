@@ -109,7 +109,7 @@ class AdminDataCrudTest extends TestCase
             'address_detail' => 'Jl. Uji No. 1',
             'description' => 'Deskripsi uji',
             'status' => 'available',
-            'is_verified' => '1',
+            'is_verified' => '0',
         ];
 
         $this->actingAs($this->admin)->post(route('admin.property-projects.store'), $payload);
@@ -119,17 +119,25 @@ class AdminDataCrudTest extends TestCase
         $this->assertSame(['cluster-uji-coba', 'cluster-uji-coba-2'], $slugs);
 
         $project = PropertyProject::where('slug', 'cluster-uji-coba')->firstOrFail();
-        $this->assertTrue($project->is_verified);
+
+        // Belum ada PKS / surat kuasa developer: tidak bisa ditayangkan
+        $this->actingAs($this->admin)->put(route('admin.property-projects.update', $project), [
+            ...$payload,
+            'is_verified' => '1',
+        ])->assertSessionHasErrors('is_verified');
+        $this->assertFalse($project->fresh()->is_verified);
+
+        $project->files()->create(['file_path' => 'properties/legal/pks.pdf', 'file_type' => 'legal_doc']);
 
         $this->actingAs($this->admin)->put(route('admin.property-projects.update', $project), [
             ...$payload,
             'title' => 'Cluster Uji Ganti',
-            'is_verified' => '0',
-        ]);
+            'is_verified' => '1',
+        ])->assertSessionHasNoErrors();
 
         $project->refresh();
         $this->assertSame('cluster-uji-ganti', $project->slug);
-        $this->assertFalse($project->is_verified);
+        $this->assertTrue($project->is_verified);
 
         $this->actingAs($this->admin)->delete(route('admin.property-projects.destroy', $project));
         $this->assertSoftDeleted($project);
@@ -242,15 +250,15 @@ class AdminDataCrudTest extends TestCase
 
     public function test_commission_crud_calculates_amounts(): void
     {
-        $akad = DigitalAkad::doesntHave('commission')->first()
-            ?? DigitalAkad::create([
-                'akad_number' => 'AKAD/UJI/0001',
-                'property_project_id' => PropertyProject::firstOrFail()->id,
-                'buyer_lead_id' => BuyerLead::firstOrFail()->id,
-                'akad_type' => 'akad_istishna',
-                'transaction_amount' => 800000000,
-                'terms_content' => 'Uji',
-            ]);
+        $akad = DigitalAkad::create([
+            'akad_number' => 'AKAD/UJI/0001',
+            'property_project_id' => PropertyProject::firstOrFail()->id,
+            'buyer_lead_id' => BuyerLead::firstOrFail()->id,
+            'akad_type' => 'akad_istishna',
+            'transaction_amount' => 800000000,
+            'terms_content' => 'Uji',
+            'status' => 'draft',
+        ]);
         $agency = AgencyPartner::firstOrFail();
 
         $payload = [
@@ -261,6 +269,17 @@ class AdminDataCrudTest extends TestCase
             'platform_fee' => 500000,
             'status' => 'paid',
         ];
+
+        // Akad belum ditandatangani ketiga pihak: komisi ditolak
+        $this->actingAs($this->admin)->post(route('admin.commissions.store'), $payload)
+            ->assertSessionHasErrors('digital_akad_id');
+
+        $akad->update([
+            'buyer_signed_at' => now(),
+            'agency_signed_at' => now(),
+            'developer_signed_at' => now(),
+            'status' => 'signed',
+        ]);
 
         $this->actingAs($this->admin)->post(route('admin.commissions.store'), $payload)
             ->assertRedirect(route('admin.commissions.index'));
