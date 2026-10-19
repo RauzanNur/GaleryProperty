@@ -1,5 +1,11 @@
 <?php
 
+use App\Http\Controllers\Admin\AgencyPartnerController;
+use App\Http\Controllers\Admin\BuyerLeadController;
+use App\Http\Controllers\Admin\CommissionController;
+use App\Http\Controllers\Admin\DigitalAkadController;
+use App\Http\Controllers\Admin\PropertyFileController;
+use App\Http\Controllers\Admin\PropertyProjectController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +27,12 @@ Route::middleware('auth')->group(function () {
 // Super Admin Management Routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('users', AdminUserController::class);
+    Route::resource('agency-partners', AgencyPartnerController::class);
+    Route::resource('property-projects', PropertyProjectController::class);
+    Route::resource('property-files', PropertyFileController::class);
+    Route::resource('buyer-leads', BuyerLeadController::class);
+    Route::resource('digital-akads', DigitalAkadController::class);
+    Route::resource('commissions', CommissionController::class);
 });
 
 require __DIR__.'/auth.php';

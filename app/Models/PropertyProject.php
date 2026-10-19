@@ -13,6 +13,25 @@ class PropertyProject extends Model
 {
     use HasFactory, SoftDeletes;
 
+    public const PROPERTY_TYPES = [
+        'rumah' => 'Rumah',
+        'tanah_kavling' => 'Tanah Kavling',
+        'ruko' => 'Ruko',
+    ];
+
+    public const SYARIAH_SCHEMES = [
+        'istishna' => 'Istishna',
+        'murabahah' => 'Murabahah',
+        'cash_bertahap' => 'Cash Bertahap',
+        'cash_keras' => 'Cash Keras',
+    ];
+
+    public const STATUSES = [
+        'available' => 'Tersedia',
+        'booked' => 'Dipesan',
+        'sold_out' => 'Terjual Habis',
+    ];
+
     protected $fillable = [
         'agency_partner_id',
         'title',
