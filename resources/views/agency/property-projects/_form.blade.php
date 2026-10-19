@@ -10,7 +10,7 @@
             ? 'Opsional: unggah dokumen tambahan. Dokumen yang sudah ada tetap tersimpan.'
             : 'Wajib. Dasar agency mewakili developer saat menandatangani akad. PDF/JPG/PNG, maks 5 MB.'"
         :required="! $propertyProject->exists"
-        class="block w-full text-sm text-gray-700 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"
+        class="block w-full text-sm text-gray-700 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
     />
     <x-admin.input
         type="file"
@@ -19,7 +19,7 @@
         accept=".jpg,.jpeg,.png,.webp"
         multiple
         hint="Opsional, maksimal 5 foto sekaligus. Foto pertama menjadi foto utama."
-        class="block w-full text-sm text-gray-700 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"
+        class="block w-full text-sm text-gray-700 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
     />
 </div>
 @if ($errors->has('photos') || $errors->has('photos.*'))

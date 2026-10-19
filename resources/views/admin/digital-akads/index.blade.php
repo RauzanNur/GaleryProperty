@@ -38,7 +38,7 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm">
                             @php($signedCount = collect([$akad->buyer_signed_at, $akad->agency_signed_at, $akad->developer_signed_at])->filter()->count())
-                            <span class="{{ $signedCount === 3 ? 'text-emerald-700 font-semibold' : 'text-gray-600' }}">{{ $signedCount }}/3 pihak</span>
+                            <span class="{{ $signedCount === 3 ? 'text-primary-700 font-semibold' : 'text-gray-600' }}">{{ $signedCount }}/3 pihak</span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <x-admin.badge :value="$akad->status" :labels="\App\Models\DigitalAkad::STATUSES" />

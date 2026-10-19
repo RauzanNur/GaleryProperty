@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <x-admin.header :title="$buyerLead->full_name" :index-url="route('admin.buyer-leads.index')" index-label="Leads Calon Pembeli">
-            <a href="{{ route('admin.buyer-leads.edit', $buyerLead) }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg shadow-sm transition">Ubah Data</a>
+            <a href="{{ route('admin.buyer-leads.edit', $buyerLead) }}" class="inline-flex items-center px-4 py-2 bg-gold-600 hover:bg-gold-700 text-white text-sm font-semibold rounded-lg shadow-sm transition">Ubah Data</a>
         </x-admin.header>
     </x-slot>
 
@@ -18,17 +18,17 @@
                     <x-admin.detail label="Email">{{ $buyerLead->email }}</x-admin.detail>
                     <x-admin.detail label="Akun Pembeli">
                         @if ($buyerLead->user)
-                            <a href="{{ route('admin.users.show', $buyerLead->user) }}" class="text-emerald-700 hover:underline">{{ $buyerLead->user->name }}</a>
+                            <a href="{{ route('admin.users.show', $buyerLead->user) }}" class="text-primary-700 hover:underline">{{ $buyerLead->user->name }}</a>
                         @endif
                     </x-admin.detail>
                     <x-admin.detail label="Projek Diminati">
                         @if ($buyerLead->propertyProject)
-                            <a href="{{ route('admin.property-projects.show', $buyerLead->propertyProject) }}" class="text-emerald-700 hover:underline">{{ $buyerLead->propertyProject->title }}</a>
+                            <a href="{{ route('admin.property-projects.show', $buyerLead->propertyProject) }}" class="text-primary-700 hover:underline">{{ $buyerLead->propertyProject->title }}</a>
                         @endif
                     </x-admin.detail>
                     <x-admin.detail label="Agency">
                         @if ($buyerLead->agencyPartner)
-                            <a href="{{ route('admin.agency-partners.show', $buyerLead->agencyPartner) }}" class="text-emerald-700 hover:underline">{{ $buyerLead->agencyPartner->agency_name }}</a>
+                            <a href="{{ route('admin.agency-partners.show', $buyerLead->agencyPartner) }}" class="text-primary-700 hover:underline">{{ $buyerLead->agencyPartner->agency_name }}</a>
                         @endif
                     </x-admin.detail>
                     <x-admin.detail label="Anggaran">
@@ -48,7 +48,7 @@
                 <ul class="divide-y divide-gray-100">
                     @forelse ($buyerLead->digitalAkads as $akad)
                         <li class="py-2 flex items-center justify-between gap-4">
-                            <a href="{{ route('admin.digital-akads.show', $akad) }}" class="text-sm text-emerald-700 hover:underline">{{ $akad->akad_number }}</a>
+                            <a href="{{ route('admin.digital-akads.show', $akad) }}" class="text-sm text-primary-700 hover:underline">{{ $akad->akad_number }}</a>
                             <x-admin.badge :value="$akad->status" :labels="\App\Models\DigitalAkad::STATUSES" />
                         </li>
                     @empty

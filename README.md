@@ -1,4 +1,4 @@
-# Galery Property Halal
+# GalleryProperty
 
 > **Platform Digital Kurasi & Transaksi Properti Murni Syariah bagi Keluarga Muslim, Pengembang, dan Mitra Agency**
 
@@ -258,7 +258,7 @@ Untuk anggota tim yang baru mengklon repositori ini, ikuti langkah berikut:
 ### Langkah 1: Klon & Masuk Direktori
 ```bash
 git clone <repository-url>
-cd "Galery Property"
+cd GaleryProperty
 ```
 
 ### Langkah 2: Instal Dependensi PHP
@@ -328,5 +328,5 @@ Hasil audit integritas data pasca eksekusi `php artisan db:seed`:
 ---
 
 ## 9. Lisensi & Hak Cipta
-Hak Cipta &copy; 2026 **Galery Property Halal**. Dikembangkan untuk kemaslahatan transaksi properti keluarga muslim tanpa riba.
+Hak Cipta &copy; 2026 **GalleryProperty**. Dikembangkan untuk kemaslahatan transaksi properti keluarga muslim tanpa riba.
                                                                                                                

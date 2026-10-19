@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <x-admin.header :title="$propertyFile->caption ?: 'Detail Berkas'" :index-url="route('admin.property-files.index')" index-label="Berkas Properti">
-            <a href="{{ route('admin.property-files.edit', $propertyFile) }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg shadow-sm transition">Ubah Data</a>
+            <a href="{{ route('admin.property-files.edit', $propertyFile) }}" class="inline-flex items-center px-4 py-2 bg-gold-600 hover:bg-gold-700 text-white text-sm font-semibold rounded-lg shadow-sm transition">Ubah Data</a>
         </x-admin.header>
     </x-slot>
 
@@ -25,7 +25,7 @@
                 <dl class="divide-y divide-gray-100">
                     <x-admin.detail label="Projek">
                         @if ($propertyFile->propertyProject)
-                            <a href="{{ route('admin.property-projects.show', $propertyFile->propertyProject) }}" class="text-emerald-700 hover:underline">{{ $propertyFile->propertyProject->title }}</a>
+                            <a href="{{ route('admin.property-projects.show', $propertyFile->propertyProject) }}" class="text-primary-700 hover:underline">{{ $propertyFile->propertyProject->title }}</a>
                         @endif
                     </x-admin.detail>
                     <x-admin.detail label="Tipe Berkas">

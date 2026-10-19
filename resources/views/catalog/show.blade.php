@@ -1,4 +1,6 @@
 <x-app-layout>
+    <x-slot name="title">{{ $propertyProject->title }}</x-slot>
+
     <x-slot name="header">
         <x-admin.header :title="$propertyProject->title" :index-url="route('catalog.index')" index-label="Katalog" />
     </x-slot>
@@ -39,7 +41,7 @@
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4 lg:sticky lg:top-6">
                     <div>
                         <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Harga</div>
-                        <div class="text-2xl font-bold text-emerald-700">Rp {{ number_format($propertyProject->price, 0, ',', '.') }}</div>
+                        <div class="text-2xl font-bold text-primary-700">Rp {{ number_format($propertyProject->price, 0, ',', '.') }}</div>
                     </div>
                     <x-admin.badge :value="$propertyProject->status" :labels="\App\Models\PropertyProject::STATUSES" />
 
@@ -50,15 +52,15 @@
                         </div>
 
                         @guest
-                            <a href="{{ route('login') }}" class="block text-center w-full px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg transition">
+                            <a href="{{ route('login') }}" class="block text-center w-full px-4 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-lg transition">
                                 Login untuk Chat Agency
                             </a>
-                            <p class="text-xs text-gray-400 text-center">Belum punya akun? <a href="{{ route('register') }}" class="text-emerald-700 hover:underline">Daftar sebagai calon pembeli</a></p>
+                            <p class="text-xs text-gray-400 text-center">Belum punya akun? <a href="{{ route('register') }}" class="text-primary-700 hover:underline">Daftar sebagai calon pembeli</a></p>
                         @else
                             @if (auth()->user()->isBuyer())
                                 <form method="POST" action="{{ route('chat.start', $propertyProject) }}">
                                     @csrf
-                                    <button type="submit" class="w-full px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg transition">
+                                    <button type="submit" class="w-full px-4 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-lg transition">
                                         Chat Agency
                                     </button>
                                 </form>

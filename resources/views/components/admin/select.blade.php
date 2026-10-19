@@ -18,7 +18,7 @@
         name="{{ $name }}"
         id="{{ $name }}"
         @required($required)
-        {{ $attributes->merge(['class' => 'w-full text-sm border-gray-200 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 text-gray-800' . ($errors->has($name) ? ' border-rose-400 ring-rose-200' : '')]) }}
+        {{ $attributes->merge(['class' => 'w-full text-sm border-gray-200 rounded-lg focus:ring-primary-500 focus:border-primary-500 text-gray-800' . ($errors->has($name) ? ' border-rose-400 ring-rose-200' : '')]) }}
     >
         @if ($placeholder)
             <option value="">{{ $placeholder }}</option>

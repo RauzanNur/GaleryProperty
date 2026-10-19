@@ -2,7 +2,7 @@
     <x-slot name="header">
         <x-admin.header :title="$propertyProject->title" :index-url="route('agency.property-projects.index')" index-label="Listing Saya">
             @unless ($propertyProject->is_verified)
-                <a href="{{ route('agency.property-projects.edit', $propertyProject) }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg shadow-sm transition">Ubah Pengajuan</a>
+                <a href="{{ route('agency.property-projects.edit', $propertyProject) }}" class="inline-flex items-center px-4 py-2 bg-gold-600 hover:bg-gold-700 text-white text-sm font-semibold rounded-lg shadow-sm transition">Ubah Pengajuan</a>
             @endunless
         </x-admin.header>
     </x-slot>
@@ -12,7 +12,7 @@
             <x-admin.flash />
 
             @if ($propertyProject->is_verified)
-                <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center justify-between gap-4">
+                <div class="p-4 rounded-xl bg-primary-50 border border-primary-200 text-primary-800 text-sm flex items-center justify-between gap-4">
                     <span>Listing ini sudah diverifikasi dan tayang di katalog.</span>
                     <a href="{{ route('catalog.show', $propertyProject) }}" class="font-semibold hover:underline">Lihat di katalog →</a>
                 </div>

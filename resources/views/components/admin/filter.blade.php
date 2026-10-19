@@ -14,7 +14,7 @@
                 id="search"
                 value="{{ request('search') }}"
                 placeholder="{{ $placeholder }}"
-                class="w-full px-4 py-2 text-sm border-gray-200 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 placeholder-gray-400"
+                class="w-full px-4 py-2 text-sm border-gray-200 rounded-lg focus:ring-primary-500 focus:border-primary-500 placeholder-gray-400"
             />
         </div>
 

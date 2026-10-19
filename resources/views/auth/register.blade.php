@@ -1,4 +1,11 @@
 <x-guest-layout>
+    <x-slot name="title">{{ __('Register') }}</x-slot>
+
+    <div class="mb-6">
+        <h1 class="font-display text-2xl font-bold text-primary-950">Buat akun calon pembeli</h1>
+        <p class="text-sm text-gray-500 mt-1">Gratis. Dengan akun, Anda bisa chat langsung dengan agency properti syariah.</p>
+    </div>
+
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
@@ -40,7 +47,7 @@
         </div>
 
         <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
+            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500" href="{{ route('login') }}">
                 {{ __('Already registered?') }}
             </a>
 

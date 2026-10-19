@@ -16,7 +16,7 @@
                             <div class="font-semibold text-gray-900">
                                 {{ $user->isAgencyPartner() ? $conversation->buyer->name : $conversation->agencyPartner->agency_name }}
                             </div>
-                            <div class="text-xs text-emerald-700">{{ $conversation->propertyProject?->title }}</div>
+                            <div class="text-xs text-primary-700">{{ $conversation->propertyProject?->title }}</div>
                             <p class="text-sm mt-1 truncate {{ $unread ? 'text-gray-900 font-semibold' : 'text-gray-500' }}">
                                 {{ $conversation->latestMessage?->body ?? 'Belum ada pesan.' }}
                             </p>
@@ -33,7 +33,7 @@
                         <p class="text-base font-semibold text-gray-600">Belum ada percakapan</p>
                         @if ($user->isBuyer())
                             <p class="text-sm text-gray-400 mt-1">
-                                Temukan properti di <a href="{{ route('catalog.index') }}" class="text-emerald-700 hover:underline">katalog</a>, lalu klik "Chat Agency".
+                                Temukan properti di <a href="{{ route('catalog.index') }}" class="text-primary-700 hover:underline">katalog</a>, lalu klik "Chat Agency".
                             </p>
                         @endif
                     </div>

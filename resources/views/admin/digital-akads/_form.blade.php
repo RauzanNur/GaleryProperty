@@ -34,7 +34,7 @@
     :hint="$digitalAkad->document_pdf_path
         ? 'Dokumen saat ini: ' . $digitalAkad->document_pdf_path . '. Kosongkan jika tidak ingin mengganti. Maks 5 MB.'
         : 'Opsional. Maks 5 MB.'"
-    class="block w-full text-sm text-gray-700 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"
+    class="block w-full text-sm text-gray-700 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
 />
 
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 border-t border-gray-100">

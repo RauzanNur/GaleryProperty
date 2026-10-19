@@ -40,9 +40,9 @@
                             maxlength="{{ \App\Models\Message::MAX_LENGTH }}"
                             required
                             placeholder="Tulis pesan..."
-                            class="flex-1 text-sm border-gray-200 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 resize-none"
+                            class="flex-1 text-sm border-gray-200 rounded-lg focus:ring-primary-500 focus:border-primary-500 resize-none"
                         >{{ old('body') }}</textarea>
-                        <button type="submit" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg transition">Kirim</button>
+                        <button type="submit" class="px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-lg transition">Kirim</button>
                     </div>
                     @error('body')
                         <p class="text-xs text-rose-600 mt-1.5">{{ $message }}</p>

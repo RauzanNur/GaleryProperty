@@ -32,7 +32,7 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ $project->city }}, {{ $project->province }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">Rp {{ number_format($project->price, 0, ',', '.') }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm {{ $project->legal_docs_count ? 'text-emerald-700' : 'text-rose-600' }}">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm {{ $project->legal_docs_count ? 'text-primary-700' : 'text-rose-600' }}">
                                 {{ $project->legal_docs_count ? $project->legal_docs_count . ' dokumen' : 'Belum ada' }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
@@ -43,9 +43,9 @@
                                 @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-3">
-                                <a href="{{ route('agency.property-projects.show', $project) }}" class="text-emerald-700 hover:underline">Detail</a>
+                                <a href="{{ route('agency.property-projects.show', $project) }}" class="text-primary-700 hover:underline">Detail</a>
                                 @unless ($project->is_verified)
-                                    <a href="{{ route('agency.property-projects.edit', $project) }}" class="text-indigo-700 hover:underline">Ubah</a>
+                                    <a href="{{ route('agency.property-projects.edit', $project) }}" class="text-gold-700 hover:underline">Ubah</a>
                                 @endunless
                             </td>
                         </tr>

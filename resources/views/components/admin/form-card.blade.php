@@ -21,7 +21,7 @@
 
                 <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
                     <a href="{{ $cancelUrl }}" class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold rounded-lg transition">Batal</a>
-                    <button type="submit" class="inline-flex items-center px-5 py-2 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white text-sm font-semibold rounded-lg shadow-sm transition">
+                    <button type="submit" class="inline-flex items-center px-5 py-2 bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white text-sm font-semibold rounded-lg shadow-sm transition">
                         {{ $submitLabel }}
                     </button>
                 </div>

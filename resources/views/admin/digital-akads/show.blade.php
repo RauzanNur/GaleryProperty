@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <x-admin.header :title="$digitalAkad->akad_number" :index-url="route('admin.digital-akads.index')" index-label="Akad Digital">
-            <a href="{{ route('admin.digital-akads.edit', $digitalAkad) }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg shadow-sm transition">Ubah Data</a>
+            <a href="{{ route('admin.digital-akads.edit', $digitalAkad) }}" class="inline-flex items-center px-4 py-2 bg-gold-600 hover:bg-gold-700 text-white text-sm font-semibold rounded-lg shadow-sm transition">Ubah Data</a>
         </x-admin.header>
     </x-slot>
 
@@ -13,24 +13,24 @@
                 <dl class="divide-y divide-gray-100">
                     <x-admin.detail label="Status">
                         <x-admin.badge :value="$digitalAkad->status" :labels="\App\Models\DigitalAkad::STATUSES" />
-                        <span class="ml-2 text-xs {{ $digitalAkad->isFullySigned() ? 'text-emerald-700' : 'text-gray-400' }}">
+                        <span class="ml-2 text-xs {{ $digitalAkad->isFullySigned() ? 'text-primary-700' : 'text-gray-400' }}">
                             {{ $digitalAkad->isFullySigned() ? 'Lengkap ditandatangani 3 pihak' : 'Tanda tangan belum lengkap' }}
                         </span>
                     </x-admin.detail>
                     <x-admin.detail label="Jenis Akad">{{ \App\Models\DigitalAkad::AKAD_TYPES[$digitalAkad->akad_type] ?? $digitalAkad->akad_type }}</x-admin.detail>
                     <x-admin.detail label="Calon Pembeli">
                         @if ($digitalAkad->buyerLead)
-                            <a href="{{ route('admin.buyer-leads.show', $digitalAkad->buyerLead) }}" class="text-emerald-700 hover:underline">{{ $digitalAkad->buyerLead->full_name }}</a>
+                            <a href="{{ route('admin.buyer-leads.show', $digitalAkad->buyerLead) }}" class="text-primary-700 hover:underline">{{ $digitalAkad->buyerLead->full_name }}</a>
                         @endif
                     </x-admin.detail>
                     <x-admin.detail label="Projek">
                         @if ($digitalAkad->propertyProject)
-                            <a href="{{ route('admin.property-projects.show', $digitalAkad->propertyProject) }}" class="text-emerald-700 hover:underline">{{ $digitalAkad->propertyProject->title }}</a>
+                            <a href="{{ route('admin.property-projects.show', $digitalAkad->propertyProject) }}" class="text-primary-700 hover:underline">{{ $digitalAkad->propertyProject->title }}</a>
                         @endif
                     </x-admin.detail>
                     <x-admin.detail label="Agency">
                         @if ($digitalAkad->agencyPartner)
-                            <a href="{{ route('admin.agency-partners.show', $digitalAkad->agencyPartner) }}" class="text-emerald-700 hover:underline">{{ $digitalAkad->agencyPartner->agency_name }}</a>
+                            <a href="{{ route('admin.agency-partners.show', $digitalAkad->agencyPartner) }}" class="text-primary-700 hover:underline">{{ $digitalAkad->agencyPartner->agency_name }}</a>
                         @endif
                     </x-admin.detail>
                     <x-admin.detail label="Nilai Transaksi">Rp {{ number_format($digitalAkad->transaction_amount, 0, ',', '.') }}</x-admin.detail>
@@ -41,14 +41,14 @@
                     <x-admin.detail label="TTD Developer">{{ $digitalAkad->developer_signed_at?->format('d M Y, H:i') }}</x-admin.detail>
                     <x-admin.detail label="Dokumen PDF">
                         @if ($digitalAkad->document_pdf_path && Storage::disk('public')->exists($digitalAkad->document_pdf_path))
-                            <a href="{{ Storage::url($digitalAkad->document_pdf_path) }}" target="_blank" class="text-emerald-700 hover:underline">Buka dokumen</a>
+                            <a href="{{ Storage::url($digitalAkad->document_pdf_path) }}" target="_blank" class="text-primary-700 hover:underline">Buka dokumen</a>
                         @elseif ($digitalAkad->document_pdf_path)
                             <span class="text-gray-500">{{ $digitalAkad->document_pdf_path }} (berkas tidak ditemukan)</span>
                         @endif
                     </x-admin.detail>
                     <x-admin.detail label="Komisi">
                         @if ($digitalAkad->commission)
-                            <a href="{{ route('admin.commissions.show', $digitalAkad->commission) }}" class="text-emerald-700 hover:underline">
+                            <a href="{{ route('admin.commissions.show', $digitalAkad->commission) }}" class="text-primary-700 hover:underline">
                                 Rp {{ number_format($digitalAkad->commission->net_commission, 0, ',', '.') }} (bersih)
                             </a>
                         @endif

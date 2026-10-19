@@ -1,4 +1,6 @@
 <x-app-layout>
+    <x-slot name="title">Katalog Properti</x-slot>
+
     <x-slot name="header">
         <x-admin.header title="Katalog Properti Syariah" subtitle="Properti terkurasi tanpa riba, tanpa denda, dan tanpa sita paksa." />
     </x-slot>
@@ -22,26 +24,9 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 @forelse ($propertyProjects as $project)
-                    <a href="{{ route('catalog.show', $project) }}" class="group bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition">
-                        @if ($project->primaryPhoto && Storage::disk('public')->exists($project->primaryPhoto->file_path))
-                            <img src="{{ Storage::url($project->primaryPhoto->file_path) }}" alt="{{ $project->title }}" class="h-44 w-full object-cover" />
-                        @else
-                            <div class="h-44 w-full bg-emerald-50 flex items-center justify-center text-emerald-700 text-sm font-semibold">
-                                {{ \App\Models\PropertyProject::PROPERTY_TYPES[$project->property_type] ?? 'Properti' }}
-                            </div>
-                        @endif
-                        <div class="p-5 space-y-2">
-                            <div class="flex items-center gap-2">
-                                <x-admin.badge value="info" :labels="['info' => \App\Models\PropertyProject::SYARIAH_SCHEMES[$project->syariah_scheme] ?? $project->syariah_scheme]" />
-                                <x-admin.badge :value="$project->status" :labels="\App\Models\PropertyProject::STATUSES" />
-                            </div>
-                            <h3 class="font-bold text-gray-900 group-hover:text-emerald-700">{{ $project->title }}</h3>
-                            <p class="text-sm text-gray-500">{{ $project->city }}, {{ $project->province }}</p>
-                            <p class="text-lg font-bold text-emerald-700">Rp {{ number_format($project->price, 0, ',', '.') }}</p>
-                        </div>
-                    </a>
+                    <x-property-card :project="$project" />
                 @empty
-                    <div class="col-span-full bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-12 text-center">
+                    <div class="col-span-full bg-white rounded-2xl border border-cream-dark shadow-sm px-6 py-12 text-center">
                         <p class="text-base font-semibold text-gray-600">Belum ada properti yang cocok</p>
                         <p class="text-sm text-gray-400 mt-1">Coba ubah kata kunci pencarian atau reset filter.</p>
                     </div>

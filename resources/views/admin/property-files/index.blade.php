@@ -28,7 +28,7 @@
                             <div class="font-semibold text-gray-900 flex items-center gap-2">
                                 <span>{{ $file->caption ?: 'Tanpa keterangan' }}</span>
                                 @if ($file->is_primary)
-                                    <span class="inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">Utama</span>
+                                    <span class="inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold bg-gold-50 text-gold-700 border border-gold-200">Utama</span>
                                 @endif
                             </div>
                             <div class="text-xs text-gray-400">{{ $file->file_path }}</div>

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <x-admin.header :title="$agencyPartner->agency_name" :index-url="route('admin.agency-partners.index')" index-label="Agency Partner">
-            <a href="{{ route('admin.agency-partners.edit', $agencyPartner) }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg shadow-sm transition">Ubah Data</a>
+            <a href="{{ route('admin.agency-partners.edit', $agencyPartner) }}" class="inline-flex items-center px-4 py-2 bg-gold-600 hover:bg-gold-700 text-white text-sm font-semibold rounded-lg shadow-sm transition">Ubah Data</a>
         </x-admin.header>
     </x-slot>
 
@@ -31,7 +31,7 @@
                     <x-admin.detail label="Tanggal Verifikasi">{{ $agencyPartner->verified_at?->format('d M Y, H:i') }}</x-admin.detail>
                     <x-admin.detail label="Akun Pemilik">
                         @if ($agencyPartner->user)
-                            <a href="{{ route('admin.users.show', $agencyPartner->user) }}" class="text-emerald-700 hover:underline">{{ $agencyPartner->user->name }}</a>
+                            <a href="{{ route('admin.users.show', $agencyPartner->user) }}" class="text-primary-700 hover:underline">{{ $agencyPartner->user->name }}</a>
                             <span class="text-gray-500">({{ $agencyPartner->user->email }})</span>
                         @endif
                     </x-admin.detail>
@@ -49,7 +49,7 @@
                 <ul class="divide-y divide-gray-100">
                     @forelse ($agencyPartner->propertyProjects as $project)
                         <li class="py-2 flex items-center justify-between gap-4">
-                            <a href="{{ route('admin.property-projects.show', $project) }}" class="text-sm text-emerald-700 hover:underline">{{ $project->title }}</a>
+                            <a href="{{ route('admin.property-projects.show', $project) }}" class="text-sm text-primary-700 hover:underline">{{ $project->title }}</a>
                             <span class="text-sm text-gray-500">Rp {{ number_format($project->price, 0, ',', '.') }}</span>
                         </li>
                     @empty

@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <div class="flex items-center gap-2 text-sm text-gray-500 mb-1">
-                    <a href="{{ route('admin.users.index') }}" class="hover:text-emerald-600 transition">Manajemen Pengguna</a>
+                    <a href="{{ route('admin.users.index') }}" class="hover:text-primary-600 transition">Manajemen Pengguna</a>
                     <span>/</span>
                     <span class="text-gray-800 font-medium">Tambah Baru</span>
                 </div>
@@ -40,7 +40,7 @@
                             value="{{ old('name') }}"
                             placeholder="Contoh: Ahmad Fauzan"
                             required
-                            class="w-full text-sm border-gray-200 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 @error('name') border-rose-400 ring-rose-200 @enderror"
+                            class="w-full text-sm border-gray-200 rounded-lg focus:ring-primary-500 focus:border-primary-500 @error('name') border-rose-400 ring-rose-200 @enderror"
                         />
                         @error('name')
                             <p class="text-xs text-rose-600 mt-1.5">{{ $message }}</p>
@@ -60,7 +60,7 @@
                                 value="{{ old('email') }}"
                                 placeholder="ahmad@keluargamuslim.com"
                                 required
-                                class="w-full text-sm border-gray-200 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 @error('email') border-rose-400 ring-rose-200 @enderror"
+                                class="w-full text-sm border-gray-200 rounded-lg focus:ring-primary-500 focus:border-primary-500 @error('email') border-rose-400 ring-rose-200 @enderror"
                             />
                             @error('email')
                                 <p class="text-xs text-rose-600 mt-1.5">{{ $message }}</p>
@@ -77,7 +77,7 @@
                                 id="phone"
                                 value="{{ old('phone') }}"
                                 placeholder="Contoh: 081234567890"
-                                class="w-full text-sm border-gray-200 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 @error('phone') border-rose-400 ring-rose-200 @enderror"
+                                class="w-full text-sm border-gray-200 rounded-lg focus:ring-primary-500 focus:border-primary-500 @error('phone') border-rose-400 ring-rose-200 @enderror"
                             />
                             <p class="text-xs text-gray-400 mt-1">Harus unik jika diisi.</p>
                             @error('phone')
@@ -96,7 +96,7 @@
                                 name="role"
                                 id="role"
                                 required
-                                class="w-full text-sm border-gray-200 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 text-gray-800 @error('role') border-rose-400 ring-rose-200 @enderror"
+                                class="w-full text-sm border-gray-200 rounded-lg focus:ring-primary-500 focus:border-primary-500 text-gray-800 @error('role') border-rose-400 ring-rose-200 @enderror"
                             >
                                 <option value="buyer" {{ old('role', 'buyer') === 'buyer' ? 'selected' : '' }}>Calon Pembeli (Keluarga Muslim)</option>
                                 <option value="agency_partner" {{ old('role') === 'agency_partner' ? 'selected' : '' }}>Mitra Agency Properti</option>
@@ -115,7 +115,7 @@
                                 name="status"
                                 id="status"
                                 required
-                                class="w-full text-sm border-gray-200 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 text-gray-800 @error('status') border-rose-400 ring-rose-200 @enderror"
+                                class="w-full text-sm border-gray-200 rounded-lg focus:ring-primary-500 focus:border-primary-500 text-gray-800 @error('status') border-rose-400 ring-rose-200 @enderror"
                             >
                                 <option value="active" {{ old('status', 'active') === 'active' ? 'selected' : '' }}>Aktif (Dapat Bertransaksi)</option>
                                 <option value="pending" {{ old('status') === 'pending' ? 'selected' : '' }}>Pending (Menunggu Verifikasi)</option>
@@ -139,7 +139,7 @@
                                 id="password"
                                 required
                                 placeholder="Minimal 8 karakter"
-                                class="w-full text-sm border-gray-200 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 @error('password') border-rose-400 ring-rose-200 @enderror"
+                                class="w-full text-sm border-gray-200 rounded-lg focus:ring-primary-500 focus:border-primary-500 @error('password') border-rose-400 ring-rose-200 @enderror"
                             />
                             @error('password')
                                 <p class="text-xs text-rose-600 mt-1.5">{{ $message }}</p>
@@ -156,7 +156,7 @@
                                 id="password_confirmation"
                                 required
                                 placeholder="Ulangi kata sandi"
-                                class="w-full text-sm border-gray-200 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+                                class="w-full text-sm border-gray-200 rounded-lg focus:ring-primary-500 focus:border-primary-500"
                             />
                         </div>
                     </div>
@@ -166,7 +166,7 @@
                         <a href="{{ route('admin.users.index') }}" class="px-4 py-2.5 text-sm font-semibold text-gray-600 hover:text-gray-800 transition">
                             Batal
                         </a>
-                        <button type="submit" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white text-sm font-semibold rounded-lg shadow-sm transition">
+                        <button type="submit" class="px-5 py-2.5 bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white text-sm font-semibold rounded-lg shadow-sm transition">
                             Simpan Pengguna Baru
                         </button>
                     </div>

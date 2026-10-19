@@ -16,7 +16,7 @@
         id="{{ $name }}"
         rows="{{ $rows }}"
         @required($required)
-        {{ $attributes->merge(['class' => 'w-full text-sm border-gray-200 rounded-lg focus:ring-emerald-500 focus:border-emerald-500' . ($errors->has($name) ? ' border-rose-400 ring-rose-200' : '')]) }}
+        {{ $attributes->merge(['class' => 'w-full text-sm border-gray-200 rounded-lg focus:ring-primary-500 focus:border-primary-500' . ($errors->has($name) ? ' border-rose-400 ring-rose-200' : '')]) }}
     >{{ old($name, $value) }}</textarea>
     @if ($hint)
         <p class="text-xs text-gray-400 mt-1">{{ $hint }}</p>

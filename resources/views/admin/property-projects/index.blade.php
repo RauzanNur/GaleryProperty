@@ -29,7 +29,7 @@
                             <div class="font-semibold text-gray-900 flex items-center gap-2">
                                 <span>{{ $project->title }}</span>
                                 @if ($project->is_verified)
-                                    <span class="inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Terverifikasi</span>
+                                    <span class="inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary-50 text-primary-700 border border-primary-200">Terverifikasi</span>
                                 @endif
                             </div>
                             <div class="text-xs text-gray-400">{{ $project->developer_name }} · {{ $project->agencyPartner?->agency_name ?? 'Tanpa agency' }}</div>

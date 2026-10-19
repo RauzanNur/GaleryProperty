@@ -32,7 +32,7 @@
                             <div class="text-sm text-gray-900">Rp {{ number_format($commission->total_commission, 0, ',', '.') }}</div>
                             <div class="text-xs text-gray-500">{{ $commission->commission_rate }}% · fee Rp {{ number_format($commission->platform_fee, 0, ',', '.') }}</div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-emerald-700">Rp {{ number_format($commission->net_commission, 0, ',', '.') }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-primary-700">Rp {{ number_format($commission->net_commission, 0, ',', '.') }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <x-admin.badge :value="$commission->status" :labels="\App\Models\Commission::STATUSES" />
                             @if ($commission->paid_at)

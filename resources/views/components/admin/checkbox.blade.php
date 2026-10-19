@@ -14,7 +14,7 @@
             id="{{ $name }}"
             value="1"
             @checked(old($name, $checked))
-            class="rounded border-gray-300 text-emerald-600 shadow-sm focus:ring-emerald-500"
+            class="rounded border-gray-300 text-primary-600 shadow-sm focus:ring-primary-500"
         />
         <span class="text-sm font-semibold text-gray-700">{{ $label }}</span>
     </label>
