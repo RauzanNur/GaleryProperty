@@ -19,6 +19,22 @@ Sebagai wadah terpercaya untuk mencari, menyaring, dan bertransaksi properti hal
 - **Basis Data**: SQLite 3 (Database File: `database/database.sqlite`)
 - **Arsitektur**: MVC dengan Eloquent ORM & Single Table Authentication terpadu
 
+### D. Alur Bisnis
+1. **Agency mengajukan listing.** Agency partner mengisi data projek beserta berkasnya, termasuk PKS atau surat kuasa dari developer. Listing tersimpan sebagai draft (belum tayang).
+2. **Admin memverifikasi dan menayangkan.** Admin memeriksa legalitas, kesesuaian syariah, dan dokumen kuasa developer, lalu menayangkan listing. Hanya admin yang dapat menayangkan listing.
+3. **Buyer tertarik.** Calon pembeli menemukan properti di katalog dan menghubungi agency melalui chat di website. Lead otomatis tercatat.
+4. **Agency menindaklanjuti.** Agency melakukan survei dan booking bersama calon pembeli.
+5. **Transaksi terjadi.** Akad digital diterbitkan dan ditandatangani oleh pembeli, agency, dan developer (diwakili agency).
+6. **Komisi dicairkan.** Komisi dibuat dari akad yang sudah ditandatangani ketiga pihak, lalu disetujui dan dicatat pencairannya oleh admin.
+
+### E. Asumsi MVP
+- **Developer tidak memiliki akun.** Developer berhubungan langsung dengan agency berdasarkan perjanjian kerja sama (PKS) di luar sistem. Nama developer cukup dicatat sebagai teks di data projek.
+- **Agency menandatangani akad atas nama developer** sebagai wakil (*wakalah*). Karena itu, listing wajib dilengkapi PKS atau surat kuasa developer (tipe berkas *Dokumen Legalitas*), dan admin tidak menayangkan listing tanpa dokumen tersebut.
+- **Pembayaran terjadi di luar sistem.** Pembayaran properti dan komisi (dari developer ke agency, dipotong biaya platform) dilakukan di luar sistem. Sistem hanya mencatat nilai, status, dan bukti transfernya.
+- **Role developer** baru akan dipertimbangkan pada fase berikutnya, misalnya jika developer perlu memantau listing atau penjualannya sendiri.
+
+> **Catatan implementasi:** saat ini pengajuan listing oleh agency (langkah 1), chat (langkah 3), dan syarat komisi hanya dari akad yang sudah ditandatangani (langkah 6) belum diterapkan di aplikasi. Semua data masih dikelola admin melalui menu **Kelola Data**.
+
 ---
 
 ## 2. Struktur Tim & Pembagian Peran
@@ -52,6 +68,97 @@ Sebagai wadah terpercaya untuk mencari, menyaring, dan bertransaksi properti hal
 - [x] Registrasi Calon Pembeli (Profiling kebutuhan keluarga muslim)
 - [x] Perhitungan Komisi (Otomatisasi bagi hasil komisi agen)
 
+### User Story & Acceptance Criteria (MVP)
+
+Satu user story untuk setiap MVP (US-01 sampai US-05, sudah diimplementasi), ditambah story yang belum diimplementasi sesuai [Alur Bisnis](#d-alur-bisnis) (US-06 dan US-07). Pada versi saat ini, seluruh pengelolaan data, termasuk listing properti, dilakukan oleh **Admin** melalui menu **Kelola Data**.
+
+**Berlaku untuk US-01 sampai US-05:**
+- Hanya akun ber-role `admin` yang bisa mengakses halaman kelola data. Role lain mendapat respons 403, dan pengunjung yang belum login diarahkan ke halaman login.
+- Setiap data bisa ditambah, dilihat detailnya, diubah, dan dihapus. Halaman daftar menyediakan pencarian, filter, dan pembagian halaman (10 data per halaman).
+- Input yang tidak valid ditolak dengan pesan error di kolom terkait, dan isian sebelumnya tetap tersimpan di form.
+
+#### US-01 — Data Agency Partner
+> Sebagai **Admin**, saya ingin mendaftarkan dan memverifikasi profil agency partner, agar hanya mitra terverifikasi dengan rekening bank syariah yang dapat bertransaksi.
+
+**Acceptance Criteria:**
+1. Kolom wajib: akun pemilik, nama agency, dan status verifikasi.
+2. Akun pemilik hanya bisa dipilih dari akun ber-role `agency_partner` yang belum memiliki profil agency (satu akun = satu agency).
+3. Bank hanya bisa dipilih dari: Bank Syariah Indonesia (BSI), Bank Muamalat, atau BCA Syariah.
+4. Saat status diubah menjadi **Terverifikasi**, tanggal verifikasi terisi otomatis. Saat status diubah ke selain itu, tanggal verifikasi dikosongkan.
+5. Agency yang masih memiliki riwayat komisi tidak dapat dihapus, dan sistem menampilkan pesan penolakan.
+6. Daftar agency bisa dicari berdasarkan nama agency, nomor izin, atau nama/email pemilik, dan bisa difilter berdasarkan status verifikasi.
+
+#### US-02 — Daftar Projek Properti
+> Sebagai **Admin**, saya ingin mengelola listing projek properti beserta berkas pendukungnya, agar katalog hanya berisi properti syariah yang terkurasi dan lengkap dokumennya.
+
+**Acceptance Criteria:**
+1. Kolom wajib: judul, developer, tipe properti (Rumah / Tanah Kavling / Ruko), skema syariah (Istishna / Murabahah / Cash Bertahap / Cash Keras), harga, persentase komisi, provinsi, kota, alamat lengkap, deskripsi, dan status (Tersedia / Dipesan / Terjual Habis).
+2. Slug URL dibuat otomatis dari judul dan selalu unik. Judul yang sama menghasilkan akhiran `-2`, `-3`, dan seterusnya.
+3. Persentase komisi harus bernilai 0–100.
+4. Projek yang dihapus menggunakan *soft delete*: data hilang dari daftar tetapi tetap tersimpan di database.
+5. Berkas projek dapat diunggah dalam format JPG/PNG/WEBP/PDF dengan ukuran maksimal 5 MB, dengan tipe Foto / Siteplan / Brosur PDF / Dokumen Legalitas.
+6. Setiap projek hanya memiliki satu berkas utama. Menandai berkas baru sebagai utama otomatis melepas status utama berkas lain di projek yang sama.
+7. Saat berkas diganti atau dihapus, file fisik lamanya ikut dihapus dari penyimpanan.
+
+#### US-03 — Registrasi Calon Pembeli
+> Sebagai **Admin**, saya ingin mencatat profil kebutuhan calon pembeli dan melacak status prospeknya, agar leads yang kredibel dapat ditindaklanjuti oleh agency.
+
+**Acceptance Criteria:**
+1. Kolom wajib: nama lengkap, nomor WhatsApp, dan status lead.
+2. Kolom opsional: akun pembeli (role `buyer`), projek yang diminati, agency penanggung jawab, anggaran minimum/maksimum, lokasi, dan skema syariah yang diminati.
+3. Anggaran maksimum tidak boleh lebih kecil dari anggaran minimum.
+4. Status lead mengikuti alur: Lead Baru → Jadwal Survei → Prospek Booking → Proses Akad → Closing, atau Batal.
+5. Lead yang sudah memiliki akad digital tidak dapat dihapus.
+6. Daftar lead bisa dicari berdasarkan nama, nomor WhatsApp, atau email, dan bisa difilter berdasarkan status dan agency.
+
+#### US-04 — Akad Digital
+> Sebagai **Admin**, saya ingin menerbitkan akad digital dan mencatat tanda tangan ketiga pihak, agar setiap transaksi memiliki bukti perjanjian syariah yang sah dan terlacak.
+
+**Acceptance Criteria:**
+1. Kolom wajib: calon pembeli (lead), projek, jenis akad (Akad Istishna / Akad Murabahah / MOU Peminatan / MOU Keagenan), nilai transaksi, uang muka (DP), tenor, isi akad, dan status (Draft / Menunggu Tanda Tangan / Ditandatangani / Dibatalkan).
+2. Nomor akad dibuat otomatis saat disimpan dengan format `AKAD/YYYYMM/XXXX`, unik dan berurutan per bulan. Nomor ini tidak bisa diubah.
+3. Uang muka tidak boleh melebihi nilai transaksi, dan tenor harus bernilai 0–600 bulan.
+4. Waktu tanda tangan Pembeli, Agency, dan Developer dicatat terpisah. Akad ditandai "Lengkap ditandatangani 3 pihak" hanya jika ketiganya terisi.
+5. Dokumen akad dapat diunggah dalam format PDF dengan ukuran maksimal 5 MB (opsional).
+6. Menghapus akad ikut menghapus data komisi yang terhubung dengannya.
+
+#### US-05 — Perhitungan Komisi
+> Sebagai **Admin**, saya ingin sistem menghitung komisi agen secara otomatis dari setiap akad, agar bagi hasil komisi transparan dan bebas salah hitung.
+
+**Acceptance Criteria:**
+1. Setiap komisi terhubung ke tepat satu akad, dan satu akad hanya boleh memiliki satu data komisi.
+2. Kolom wajib: akad, agency penerima, nilai transaksi, persentase komisi, biaya platform, dan status (Pending / Disetujui / Dibayar / Dibatalkan).
+3. Sistem menghitung otomatis:
+   - **Total komisi** = nilai transaksi × persentase komisi
+   - **Komisi bersih** = total komisi − biaya platform
+4. Biaya platform yang melebihi total komisi ditolak.
+5. Jika status **Dibayar** dipilih tanpa tanggal pembayaran, tanggal pembayaran terisi otomatis dengan waktu saat itu.
+6. Bukti transfer dapat diunggah dalam format JPG/PNG/WEBP/PDF dengan ukuran maksimal 5 MB (opsional).
+
+#### US-06 — Chat Calon Pembeli dengan Agency Partner *(belum diimplementasi)*
+> Sebagai **Calon Pembeli**, saya ingin bertanya langsung kepada agency partner tentang projek yang saya minati melalui chat di website, agar semua komunikasi tercatat di satu tempat tanpa harus membagikan nomor pribadi.
+
+**Acceptance Criteria:**
+1. Tombol **Chat Agency** tampil di halaman detail projek dan terhubung ke agency penanggung jawab projek tersebut. Projek tanpa agency tidak menampilkan tombol ini.
+2. Pengunjung yang belum login diarahkan ke halaman login/registrasi sebelum bisa memulai chat. Hanya akun ber-role `buyer` yang dapat memulai percakapan.
+3. Satu calon pembeli memiliki satu percakapan per projek. Membuka chat untuk projek yang sama melanjutkan percakapan lama beserta riwayat pesannya.
+4. Chat adalah satu-satunya jalur kontak: nomor WhatsApp dan email agency tidak ditampilkan kepada calon pembeli.
+5. Agency partner melihat daftar percakapan yang ditujukan kepadanya saja, lengkap dengan penanda pesan yang belum dibaca, dan dapat membalas.
+6. Percakapan hanya dapat dibaca oleh calon pembeli dan agency partner yang terlibat. Pengguna lain yang mencoba membukanya mendapat respons 403.
+7. Pesan tidak boleh kosong dan maksimal 1.000 karakter.
+8. Pesan pertama dari calon pembeli otomatis membuat data lead (status **Lead Baru**) yang terhubung ke akun pembeli, projek, dan agency, jika lead tersebut belum ada.
+
+#### US-07 — Pengajuan Listing oleh Agency Partner *(belum diimplementasi)*
+> Sebagai **Agency Partner**, saya ingin mengajukan listing projek dari developer yang saya wakili, agar projek tersebut bisa ditayangkan setelah diverifikasi admin.
+
+**Acceptance Criteria:**
+1. Hanya agency partner berstatus **Terverifikasi** yang dapat mengajukan listing.
+2. Listing yang diajukan otomatis terhubung ke agency pengaju dan tersimpan sebagai draft (`is_verified` = false), sehingga belum tampil di katalog.
+3. Pengajuan wajib melampirkan minimal satu berkas **Dokumen Legalitas** berupa PKS atau surat kuasa dari developer.
+4. Agency hanya dapat melihat dan mengubah listing miliknya sendiri, dan hanya selama listing tersebut belum ditayangkan.
+5. Hanya admin yang dapat menayangkan listing. Listing yang belum memiliki dokumen kuasa developer tidak dapat ditayangkan.
+6. Agency dapat melihat status pengajuannya: menunggu verifikasi atau sudah tayang.
+
 ---
 
 ## 4. Kebijakan Akun & Hak Akses (Access Control Policy)
@@ -60,9 +167,9 @@ Sebagai wadah terpercaya untuk mencari, menyaring, dan bertransaksi properti hal
 
 | Peran (*Role*) | Kebijakan Akun | Hak Akses Utama |
 | :--- | :--- | :--- |
-| **`admin`** | Akun internal (disediakan sistem). | Akses penuh: verifikasi agency partner, kurasi projek properti halal, audit dokumen akad, dan persetujuan pencairan komisi. |
-| **`agency_partner`** | Registrasi mitra + wajib verifikasi profil oleh Admin. | Menambahkan listing projek properti, mendaftarkan leads pembeli binaan, menandatangani draft MOU, dan memantau riwayat komisi. |
-| **`buyer`** | Registrasi publik terbuka untuk keluarga muslim. | Mencari & filter katalog properti, mengajukan formulir minat/booking, dan menandatangani akad digital secara mandiri. |
+| **`admin`** | Akun internal (disediakan sistem). | Akses penuh: verifikasi agency partner, **verifikasi dan penayangan listing projek properti** (hanya admin yang dapat menayangkan), audit dokumen akad, dan persetujuan pencairan komisi. |
+| **`agency_partner`** | Registrasi mitra + wajib verifikasi profil oleh Admin. | Mengajukan listing projek (draft, wajib melampirkan PKS/surat kuasa developer), membalas chat dari calon pembeli, mendaftarkan leads pembeli binaan, menandatangani akad (termasuk atas nama developer), dan memantau riwayat komisi. Tidak dapat menayangkan listing sendiri. |
+| **`buyer`** | Registrasi publik terbuka untuk keluarga muslim. | Mencari & filter katalog properti, menghubungi agency partner **hanya melalui chat di website**, dan menandatangani akad digital secara mandiri. |
 
 ### B. Kebijakan Keamanan & Rekening
 1. **Identitas Unik**: Email dan nomor WhatsApp (`phone`) wajib unik untuk mencegah duplikasi akun prospek dan mitra.
