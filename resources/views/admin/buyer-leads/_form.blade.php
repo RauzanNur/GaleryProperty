@@ -4,7 +4,20 @@
 </div>
 
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-    <x-admin.input name="phone" label="Nomor WhatsApp" :value="$buyerLead->phone" placeholder="081234567890" required />
+    <x-admin.input
+        type="tel"
+        name="phone"
+        label="Nomor WhatsApp"
+        :value="$buyerLead->phone"
+        placeholder="081234567890"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        minlength="10"
+        maxlength="15"
+        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+        hint="Hanya angka, 10–15 digit, diawali 0 atau 62."
+        required
+    />
     <x-admin.input type="email" name="email" label="Email" :value="$buyerLead->email" />
 </div>
 

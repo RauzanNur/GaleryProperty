@@ -55,4 +55,46 @@ class EmailVerificationTest extends TestCase
 
         $this->assertFalse($user->fresh()->hasVerifiedEmail());
     }
+
+    public function test_email_can_be_verified_from_link_without_being_logged_in(): void
+    {
+        $user = User::factory()->unverified()->create();
+
+        $verificationUrl = URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(60),
+            ['id' => $user->id, 'hash' => sha1($user->email)]
+        );
+
+        // Mis. tautan dibuka di HP yang belum login
+        $this->assertGuest();
+        $this->get($verificationUrl)
+            ->assertOk()
+            ->assertSee('email berhasil diverifikasi')
+            ->assertSee(route('login'), false);
+
+        $this->assertTrue($user->fresh()->hasVerifiedEmail());
+    }
+
+    public function test_tampered_or_unsigned_link_is_rejected(): void
+    {
+        $user = User::factory()->unverified()->create();
+
+        // Hash tidak cocok
+        $this->get(URL::temporarySignedRoute('verification.verify', now()->addMinutes(60), [
+            'id' => $user->id,
+            'hash' => sha1('wrong-email'),
+        ]))->assertForbidden();
+
+        // Tanpa tanda tangan URL
+        $this->get(route('verification.verify', ['id' => $user->id, 'hash' => sha1($user->email)]))->assertForbidden();
+
+        // Tautan kedaluwarsa
+        $this->get(URL::temporarySignedRoute('verification.verify', now()->subMinute(), [
+            'id' => $user->id,
+            'hash' => sha1($user->email),
+        ]))->assertForbidden();
+
+        $this->assertFalse($user->fresh()->hasVerifiedEmail());
+    }
 }

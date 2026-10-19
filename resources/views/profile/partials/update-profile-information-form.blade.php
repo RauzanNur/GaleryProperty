@@ -24,6 +24,12 @@
         </div>
 
         <div>
+            <x-input-label for="phone" value="Nomor WhatsApp" />
+            <x-phone-input id="phone" name="phone" class="mt-1 block w-full" :value="old('phone', $user->phone)" placeholder="081234567890" />
+            <x-input-error class="mt-2" :messages="$errors->get('phone')" />
+        </div>
+
+        <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />

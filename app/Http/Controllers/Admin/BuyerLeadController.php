@@ -127,7 +127,7 @@ class BuyerLeadController extends Controller
             'agency_partner_id' => ['nullable', 'exists:agency_partners,id'],
             'property_project_id' => ['nullable', 'exists:property_projects,id'],
             'full_name' => ['required', 'string', 'max:150'],
-            'phone' => ['required', 'string', 'max:20'],
+            'phone' => ['required', ...User::phoneRules()],
             'email' => ['nullable', 'email', 'max:150'],
             'budget_min' => ['nullable', 'numeric', 'min:0', 'max:9999999999999'],
             'budget_max' => ['nullable', 'numeric', 'min:0', 'max:9999999999999', 'gte:budget_min'],

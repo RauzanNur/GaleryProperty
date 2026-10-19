@@ -220,6 +220,7 @@ class ListingChatFlowTest extends TestCase
         $this->post(route('register'), [
             'name' => 'Pembeli Baru',
             'email' => 'pembeli.baru@example.com',
+            'phone' => '081311112222',
             'password' => 'password123',
             'password_confirmation' => 'password123',
         ]);

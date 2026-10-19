@@ -72,14 +72,19 @@
                                 Nomor WhatsApp / Telepon
                             </label>
                             <input
-                                type="text"
+                                type="tel"
+                                inputmode="numeric"
+                                pattern="[0-9]*"
+                                minlength="10"
+                                maxlength="15"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                 name="phone"
                                 id="phone"
                                 value="{{ old('phone') }}"
                                 placeholder="Contoh: 081234567890"
                                 class="w-full text-sm border-gray-200 rounded-lg focus:ring-primary-500 focus:border-primary-500 @error('phone') border-rose-400 ring-rose-200 @enderror"
                             />
-                            <p class="text-xs text-gray-400 mt-1">Harus unik jika diisi.</p>
+                            <p class="text-xs text-gray-400 mt-1">Hanya angka, 10–15 digit, diawali 0 atau 62. Harus unik jika diisi.</p>
                             @error('phone')
                                 <p class="text-xs text-rose-600 mt-1.5">{{ $message }}</p>
                             @enderror

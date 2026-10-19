@@ -72,7 +72,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:150'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:150', 'unique:users,email'],
-            'phone' => ['nullable', 'string', 'max:20', 'unique:users,phone'],
+            'phone' => ['nullable', ...User::phoneRules(), 'unique:users,phone'],
             'role' => ['required', 'string', Rule::in(['admin', 'agency_partner', 'buyer'])],
             'status' => ['required', 'string', Rule::in(['active', 'pending', 'suspended'])],
             'password' => ['required', 'string', 'confirmed', Password::defaults()],
@@ -119,7 +119,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:150'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:150', Rule::unique('users')->ignore($user->id)],
-            'phone' => ['nullable', 'string', 'max:20', Rule::unique('users')->ignore($user->id)],
+            'phone' => ['nullable', ...User::phoneRules(), Rule::unique('users')->ignore($user->id)],
             'role' => ['required', 'string', Rule::in(['admin', 'agency_partner', 'buyer'])],
             'status' => ['required', 'string', Rule::in(['active', 'pending', 'suspended'])],
             'password' => ['nullable', 'string', 'confirmed', Password::defaults()],

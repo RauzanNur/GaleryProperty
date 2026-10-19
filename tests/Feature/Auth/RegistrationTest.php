@@ -21,11 +21,28 @@ class RegistrationTest extends TestCase
         $response = $this->post('/register', [
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'phone' => '081234567890',
             'password' => 'password',
             'password_confirmation' => 'password',
         ]);
 
         $this->assertAuthenticated();
         $response->assertRedirect(route('dashboard', absolute: false));
+        $this->assertSame('081234567890', auth()->user()->phone);
+    }
+
+    public function test_phone_number_must_contain_digits_only(): void
+    {
+        foreach (['0812-3456-7890', '+6281234567890', '08123abc890', '0812 3456 789', '12345'] as $invalidPhone) {
+            $this->post('/register', [
+                'name' => 'Test User',
+                'email' => 'test@example.com',
+                'phone' => $invalidPhone,
+                'password' => 'password',
+                'password_confirmation' => 'password',
+            ])->assertSessionHasErrors('phone');
+        }
+
+        $this->assertGuest();
     }
 }

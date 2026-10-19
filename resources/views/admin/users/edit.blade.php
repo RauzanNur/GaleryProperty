@@ -83,7 +83,12 @@
                                 Nomor WhatsApp / Telepon
                             </label>
                             <input
-                                type="text"
+                                type="tel"
+                                inputmode="numeric"
+                                pattern="[0-9]*"
+                                minlength="10"
+                                maxlength="15"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                 name="phone"
                                 id="phone"
                                 value="{{ old('phone', $user->phone) }}"
