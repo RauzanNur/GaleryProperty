@@ -36,10 +36,6 @@
     "Update your account's profile information and email address.": "Perbarui informasi profil dan alamat email akun Anda.",
     "Your email address is unverified.": "Alamat email Anda belum diverifikasi.",
 
-    "Verify Email Address": "Verifikasi Alamat Email",
-    "Verify your email address": "Verifikasi alamat email Anda",
-    "Please click the button below to verify your email address.": "Klik tombol di bawah ini untuk memverifikasi alamat email Anda.",
-    "If you did not create an account, no further action is required.": "Jika Anda tidak merasa mendaftar, abaikan email ini.",
     "Reset your password": "Atur ulang kata sandi Anda",
     "You are receiving this email because we received a password reset request for your account.": "Anda menerima email ini karena ada permintaan atur ulang kata sandi untuk akun Anda.",
     "This password reset link will expire in :count minutes.": "Tautan atur ulang kata sandi ini berlaku selama :count menit.",

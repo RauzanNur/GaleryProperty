@@ -8,10 +8,8 @@ use App\Models\Conversation;
 use App\Models\PropertyProject;
 use App\Models\User;
 use Database\Seeders\DatabaseSeeder;
-use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
@@ -211,45 +209,6 @@ class ListingChatFlowTest extends TestCase
 
         $this->actingAs($this->buyer)->get(route('chat.show', $conversation))->assertOk();
         $this->actingAs($this->agencyUser)->get(route('chat.show', $conversation))->assertOk();
-    }
-
-    public function test_registration_sends_verification_email(): void
-    {
-        Notification::fake();
-
-        $this->post(route('register'), [
-            'name' => 'Pembeli Baru',
-            'email' => 'pembeli.baru@example.com',
-            'password' => 'password123',
-            'password_confirmation' => 'password123',
-        ]);
-
-        $user = User::where('email', 'pembeli.baru@example.com')->firstOrFail();
-        $this->assertFalse($user->hasVerifiedEmail());
-        Notification::assertSentTo($user, VerifyEmail::class);
-    }
-
-    public function test_unverified_buyer_can_browse_catalog_but_cannot_chat(): void
-    {
-        $unverified = User::factory()->unverified()->create(['role' => 'buyer']);
-
-        $this->actingAs($unverified)->get(route('catalog.index'))->assertOk();
-        $this->actingAs($unverified)->get(route('catalog.show', $this->project))
-            ->assertOk()
-            ->assertSee('Verifikasi email Anda terlebih dahulu')
-            ->assertDontSee(route('chat.start', $this->project), false);
-
-        $this->actingAs($unverified)->post(route('chat.start', $this->project))
-            ->assertRedirect(route('verification.notice'));
-        $this->actingAs($unverified)->get(route('chat.index'))
-            ->assertRedirect(route('verification.notice'));
-        $this->assertSame(0, Conversation::where('buyer_id', $unverified->id)->count());
-
-        // Setelah verifikasi, chat terbuka
-        $unverified->markEmailAsVerified();
-        $this->actingAs($unverified)->post(route('chat.start', $this->project))
-            ->assertRedirect();
-        $this->assertSame(1, Conversation::where('buyer_id', $unverified->id)->count());
     }
 
     public function test_project_without_agency_has_no_chat_button(): void

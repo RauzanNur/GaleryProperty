@@ -21,7 +21,6 @@
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
-            <p class="mt-1 text-xs text-gray-500">Tautan verifikasi akan dikirim ke email ini. Pastikan alamatnya benar.</p>
         </div>
 
         <!-- Password -->

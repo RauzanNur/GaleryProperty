@@ -141,7 +141,7 @@ Satu user story untuk setiap MVP (US-01 sampai US-05), ditambah story sesuai [Al
 
 **Acceptance Criteria:**
 1. Tombol **Chat Agency** tampil di halaman detail projek dan terhubung ke agency penanggung jawab projek tersebut. Projek tanpa agency tidak menampilkan tombol ini.
-2. Pengunjung yang belum login diarahkan ke halaman login/registrasi sebelum bisa memulai chat. Hanya akun ber-role `buyer` yang **emailnya sudah terverifikasi** yang dapat memulai percakapan. Pembeli yang belum verifikasi tetap bisa melihat katalog, dan di halaman detail projek diberi tombol untuk mengirim ulang email verifikasi.
+2. Pengunjung yang belum login diarahkan ke halaman login/registrasi sebelum bisa memulai chat. Hanya akun ber-role `buyer` yang dapat memulai percakapan.
 3. Satu calon pembeli memiliki satu percakapan per projek. Membuka chat untuk projek yang sama melanjutkan percakapan lama beserta riwayat pesannya.
 4. Chat adalah satu-satunya jalur kontak: nomor WhatsApp dan email agency tidak ditampilkan kepada calon pembeli.
 5. Agency partner melihat daftar percakapan yang ditujukan kepadanya saja, lengkap dengan penanda pesan yang belum dibaca, dan dapat membalas. Pesan baru muncul otomatis di halaman chat (diperbarui setiap 5 detik) tanpa perlu reload.

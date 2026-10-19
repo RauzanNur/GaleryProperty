@@ -29,8 +29,8 @@ Route::middleware('auth')->group(function () {
 Route::get('/properti', [CatalogController::class, 'index'])->name('catalog.index');
 Route::get('/properti/{propertyProject:slug}', [CatalogController::class, 'show'])->name('catalog.show');
 
-// Chat calon pembeli <-> agency partner (email wajib terverifikasi; katalog tetap terbuka)
-Route::middleware(['auth', 'verified'])->group(function () {
+// Chat calon pembeli <-> agency partner
+Route::middleware('auth')->group(function () {
     Route::post('/properti/{propertyProject:slug}/chat', [ChatController::class, 'start'])->name('chat.start');
     Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
     Route::get('/chat/{conversation}', [ChatController::class, 'show'])->name('chat.show');

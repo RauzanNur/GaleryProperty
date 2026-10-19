@@ -3,33 +3,25 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Auth\Events\Verified;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class VerifyEmailController extends Controller
 {
     /**
-     * Verifikasi email dari tautan bertanda tangan, tanpa harus login lebih dulu.
-     * Pengguna yang membuka tautan di browser tempat ia sedang login langsung diarahkan ke dashboard;
-     * selain itu ditampilkan halaman sukses dengan tombol untuk lanjut.
+     * Mark the authenticated user's email address as verified.
      */
-    public function __invoke(Request $request, string $id, string $hash): RedirectResponse|View
+    public function __invoke(EmailVerificationRequest $request): RedirectResponse
     {
-        $user = User::findOrFail($id);
-
-        abort_unless(hash_equals(sha1($user->getEmailForVerification()), $hash), 403, 'Tautan verifikasi tidak valid.');
-
-        if (! $user->hasVerifiedEmail() && $user->markEmailAsVerified()) {
-            event(new Verified($user));
-        }
-
-        if ($request->user()?->is($user)) {
+        if ($request->user()->hasVerifiedEmail()) {
             return redirect()->intended(route('dashboard', absolute: false).'?verified=1');
         }
 
-        return view('auth.email-verified', compact('user'));
+        if ($request->user()->markEmailAsVerified()) {
+            event(new Verified($request->user()));
+        }
+
+        return redirect()->intended(route('dashboard', absolute: false).'?verified=1');
     }
 }

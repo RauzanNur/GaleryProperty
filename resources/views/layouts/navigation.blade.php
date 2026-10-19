@@ -11,8 +11,8 @@
         'admin.commissions' => 'Komisi',
     ];
 
-    // Chat hanya untuk pembeli dan agency partner yang emailnya sudah terverifikasi
-    $canChat = $user && $user->hasVerifiedEmail() && ($user->isBuyer() || $user->isAgencyPartner());
+    // Chat hanya untuk pembeli dan agency partner
+    $canChat = $user && ($user->isBuyer() || $user->isAgencyPartner());
     $unreadChats = $canChat ? \App\Models\Conversation::unreadConversationCountFor($user) : 0;
 @endphp
 
