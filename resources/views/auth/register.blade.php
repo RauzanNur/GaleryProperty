@@ -24,14 +24,6 @@
             <p class="mt-1 text-xs text-gray-500">Tautan verifikasi akan dikirim ke email ini. Pastikan alamatnya benar.</p>
         </div>
 
-        <!-- Nomor WhatsApp -->
-        <div class="mt-4">
-            <x-input-label for="phone" value="Nomor WhatsApp" />
-            <x-phone-input id="phone" class="block mt-1 w-full" name="phone" :value="old('phone')" required placeholder="081234567890" />
-            <x-input-error :messages="$errors->get('phone')" class="mt-2" />
-            <p class="mt-1 text-xs text-gray-500">Hanya angka, tanpa spasi atau tanda +. Agency akan menghubungi Anda melalui nomor ini.</p>
-        </div>
-
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
