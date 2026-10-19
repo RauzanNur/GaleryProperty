@@ -51,6 +51,7 @@ Tujuan: menunjukkan cara pembeli menghubungi agency, yaitu hanya lewat chat.
 | # | Langkah | Yang ditunjukkan |
 | :-: | :--- | :--- |
 | 1 | Login sebagai pembeli | Dashboard pembeli: sapaan, jumlah chat belum dibaca, jumlah percakapan, dan pintasan ke katalog. |
+| 1b | Coba buka halaman depan `http://127.0.0.1:8000` | Otomatis diarahkan ke Dashboard: landing page hanya untuk pengunjung yang belum login (berlaku untuk semua peran). |
 | 2 | Buka **Katalog** → **Ruko Syariah Al-Barokah Boulevard Bandung** | Tombol **Chat Agency** muncul karena login sebagai pembeli. |
 | 3 | Klik **Chat Agency**, kirim pesan: *"Assalamu'alaikum, unit masih tersedia?"* | Ruang chat dengan agency. Pesan pertama ini otomatis tercatat sebagai **lead baru** untuk agency. |
 | 4 | Klik **Chat Agency** lagi dari halaman projek yang sama | Masuk ke percakapan yang sama (satu percakapan per projek), riwayat pesan tetap ada. |

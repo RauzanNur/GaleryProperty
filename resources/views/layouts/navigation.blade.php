@@ -23,7 +23,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ url('/') }}">
+                    <a href="{{ $user ? route('dashboard') : url('/') }}">
                         <x-brand />
                     </a>
                 </div>

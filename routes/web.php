@@ -15,7 +15,8 @@ use App\Http\Controllers\LandingController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', LandingController::class)->name('home');
+// Landing page hanya untuk pengunjung; pengguna yang sudah login diarahkan ke dashboard
+Route::get('/', LandingController::class)->middleware('guest')->name('home');
 
 Route::get('/dashboard', DashboardController::class)->middleware(['auth', 'verified'])->name('dashboard');
 
