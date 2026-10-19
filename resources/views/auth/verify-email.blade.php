@@ -1,4 +1,11 @@
 <x-guest-layout>
+    <x-slot name="title">Verifikasi Email</x-slot>
+
+    <div class="mb-6">
+        <h1 class="font-display text-2xl font-bold text-primary-950">Verifikasi email Anda</h1>
+        <p class="text-sm text-gray-500 mt-1">Sambil menunggu, Anda tetap bisa menjelajahi katalog properti. Chat dengan agency terbuka setelah email terverifikasi.</p>
+    </div>
+
     <div class="mb-4 text-sm text-gray-600">
         {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
     </div>

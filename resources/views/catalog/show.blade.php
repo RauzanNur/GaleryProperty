@@ -57,7 +57,18 @@
                             </a>
                             <p class="text-xs text-gray-400 text-center">Belum punya akun? <a href="{{ route('register') }}" class="text-primary-700 hover:underline">Daftar sebagai calon pembeli</a></p>
                         @else
-                            @if (auth()->user()->isBuyer())
+                            @if (auth()->user()->isBuyer() && ! auth()->user()->hasVerifiedEmail())
+                                <div class="p-4 rounded-xl bg-gold-50 border border-gold-200 text-sm text-gold-900 space-y-3">
+                                    <p>Verifikasi email Anda terlebih dahulu untuk dapat chat dengan agency.</p>
+                                    @if (session('status') === 'verification-link-sent')
+                                        <p class="font-semibold text-primary-800">Tautan verifikasi baru sudah dikirim ke {{ auth()->user()->email }}.</p>
+                                    @endif
+                                    <form method="POST" action="{{ route('verification.send') }}">
+                                        @csrf
+                                        <button type="submit" class="font-semibold text-primary-700 hover:text-primary-900 underline">Kirim ulang email verifikasi</button>
+                                    </form>
+                                </div>
+                            @elseif (auth()->user()->isBuyer())
                                 <form method="POST" action="{{ route('chat.start', $propertyProject) }}">
                                     @csrf
                                     <button type="submit" class="w-full px-4 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold rounded-lg transition">
