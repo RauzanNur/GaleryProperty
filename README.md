@@ -35,6 +35,16 @@ Sebagai wadah terpercaya untuk mencari, menyaring, dan bertransaksi properti hal
 
 > **Catatan implementasi:** langkah 1, 2, 3, dan 6 sudah diterapkan di aplikasi (menu **Listing Saya** untuk agency, **Katalog** publik, dan **Chat**). Langkah 4 dan 5 (survei, booking, penerbitan akad) masih dicatat oleh admin melalui menu **Kelola Data**.
 
+### F. Limitasi Saat Ini
+- **Email belum terkirim sungguhan.** Aplikasi belum terhubung ke layanan pengirim email (`MAIL_MAILER=log`), sehingga email hanya tercatat di `storage/logs/laravel.log`. Akibatnya:
+  - Fitur **Lupa kata sandi** belum bisa dipakai pengguna. Sebagai gantinya, admin mengganti kata sandi pengguna lewat menu **Kelola Pengguna**.
+  - Tidak ada verifikasi email saat registrasi.
+- **Agency belum bisa mendaftar sendiri.** Admin membuat akun ber-role Mitra Agency, lalu membuat dan memverifikasi profil agency-nya.
+- **Chat tidak real-time sungguhan.** Pesan baru diperiksa setiap 5 detik, bukan lewat websocket.
+- **Lead dari chat belum memiliki nomor WhatsApp** (tercatat `-`), karena registrasi tidak meminta nomor. Admin perlu mengisinya sebelum menyimpan perubahan lead.
+- **Foto & dokumen pada data contoh (seeder) hanya berupa nama file**, sehingga belum tampil di katalog sampai diunggah ulang.
+- **Developer tidak memiliki akun** dan **pembayaran terjadi di luar sistem** (lihat Asumsi MVP).
+
 ---
 
 ## 2. Struktur Tim & Pembagian Peran
@@ -301,6 +311,9 @@ php artisan migrate:status
 php artisan serve
 ```
 Akses aplikasi melalui peramban web di: `http://localhost:8000`.
+
+### Langkah 7: Demo
+Ikuti naskah demo per peran dan skenario lengkapnya di [docs/DEMO.md](docs/DEMO.md).
 
 ---
 
