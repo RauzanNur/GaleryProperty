@@ -23,5 +23,8 @@
 
             <x-site-footer />
         </div>
+
+        <x-leave-confirm />
+
     </body>
 </html>

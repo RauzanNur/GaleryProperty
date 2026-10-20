@@ -37,7 +37,7 @@
             @endif
 
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sm:p-8">
-                <form action="{{ route('admin.users.update', $user) }}" method="POST" class="space-y-6">
+                <form action="{{ route('admin.users.update', $user) }}" method="POST" class="space-y-6" data-confirm-leave>
                     @csrf
                     @method('PUT')
 

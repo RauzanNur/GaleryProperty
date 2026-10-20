@@ -25,7 +25,7 @@
     <div class="py-8">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sm:p-8">
-                <form action="{{ route('admin.users.store') }}" method="POST" class="space-y-6">
+                <form action="{{ route('admin.users.store') }}" method="POST" class="space-y-6" data-confirm-leave>
                     @csrf
 
                     {{-- Nama Lengkap --}}

@@ -11,7 +11,7 @@
         <x-admin.flash />
 
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sm:p-8">
-            <form action="{{ $action }}" method="POST" class="space-y-6" @if ($files) enctype="multipart/form-data" @endif>
+            <form action="{{ $action }}" method="POST" class="space-y-6" data-confirm-leave @if ($files) enctype="multipart/form-data" @endif>
                 @csrf
                 @if (strtoupper($method) !== 'POST')
                     @method($method)
