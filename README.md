@@ -188,6 +188,8 @@ Satu user story untuk setiap MVP (US-01 sampai US-05), ditambah story sesuai [Al
    - `pending`: Menunggu persetujuan berkas legalitas agen oleh Admin.
    - `active`: Akun aktif dan dapat bertransaksi penuh.
    - `suspended`: Akun dinonaktifkan jika melanggar ketentuan syariah atau etika bisnis.
+
+   > ⚠️ **Belum diterapkan di aplikasi:** status `pending` dan `suspended` saat ini belum dicek saat login, sehingga akun tersebut masih bisa masuk dan bertransaksi. Lihat temuan **SEC-01** di [bagian 9](#9-hasil-security-testing).
 3. **Rekening Komisi**: Agency partner wajib mendaftarkan rekening pada bank syariah resmi (Bank Syariah Indonesia / Bank Muamalat / BCA Syariah).
 
 ---
@@ -340,6 +342,50 @@ Hasil audit integritas data pasca eksekusi `php artisan db:seed`:
 
 ---
 
-## 9. Lisensi & Hak Cipta
+## 9. Hasil Security Testing
+
+**Tanggal pengujian:** 20 Oktober 2026  
+**Metode:** review kode dan pengujian langsung dari sudut pandang penyerang (*black-box* + *white-box*). Serangan dijalankan sebagai request HTTP sungguhan ke aplikasi melalui test otomatis pada database in-memory, tanpa menyentuh data asli.
+
+### A. Yang Sudah Aman
+
+| Skenario Serangan | Hasil |
+| :--- | :--- |
+| Pembeli membuka/mengirim pesan ke percakapan milik pembeli lain (IDOR) | Ditolak `403` |
+| Pembeli membuka halaman admin atau area agency | Ditolak `403` |
+| Agency membuka listing milik agency lain | Ditolak `403` |
+| Menaikkan role menjadi admin lewat form profil (*mass assignment*) | Field `role` diabaikan |
+| Membuka listing draft (belum ditayangkan) di katalog | `404` |
+| XSS lewat chat, nama, atau deskripsi listing | Aman, seluruh output di-escape Blade (tidak ada `{!! !!}`) |
+| SQL injection lewat pencarian/filter | Aman, query memakai parameter binding |
+| Brute force login | Dibatasi 5 percobaan per menit per email + IP |
+| CSRF & *session fixation* | Aman, token CSRF aktif dan sesi diregenerasi saat login |
+
+### B. Temuan (*Pain Points*)
+
+Status semua temuan: **belum diperbaiki**.
+
+| ID | Tingkat | Temuan | Bukti Pengujian | Rekomendasi |
+| :--- | :--- | :--- | :--- | :--- |
+| SEC-01 | 🔴 Tinggi | Akun `suspended`/`pending` tetap bisa login dan bertransaksi | User diubah ke `suspended` → login berhasil ke dashboard, masih bisa kirim pesan | Cek `status === 'active'` saat login dan di middleware untuk sesi yang sudah berjalan |
+| SEC-02 | 🔴 Tinggi | Dokumen sensitif (PKS/surat kuasa, bukti transfer komisi, dokumen akad) tersimpan di disk `public` dan dapat dibuka tanpa login | Dokumen tersedia di `/storage/properties/legal/<nama-acak>.pdf`; siapa pun yang memegang URL dapat mengunduhnya | Pindahkan ke disk privat (`local`) dan layani lewat route yang memeriksa hak akses |
+| SEC-03 | 🔴 Tinggi | Agency yang menghapus akunnya sendiri memicu error server; penghapusan akun juga ikut menghapus riwayat chat pihak lain | `DELETE /profile` sebagai agency → HTTP `500` (`FOREIGN KEY constraint failed`) karena data komisi | Nonaktifkan fitur hapus akun untuk agency/pembeli (ganti dengan penonaktifan oleh admin), atau gunakan *soft delete* |
+| SEC-04 | 🟠 Sedang | Tidak ada pembatasan laju (*rate limit*) untuk kirim pesan dan registrasi | 60 pesan support, 60 pesan chat, dan 30 registrasi akun palsu berturut-turut semuanya diterima | Tambahkan middleware `throttle` pada route kirim pesan, mulai chat, dan registrasi |
+| SEC-05 | 🟠 Sedang | Kata sandi lemah diterima dan email tidak diverifikasi | Registrasi dengan kata sandi `password` berhasil; email profil bisa diganti ke alamat milik orang lain tanpa konfirmasi | Perketat `Password::defaults()` (panjang + huruf + angka + `uncompromised()`); aktifkan verifikasi email setelah layanan email terhubung |
+| SEC-06 | 🟠 Sedang | Kredensial akun contoh tercantum di README dan `docs/DEMO.md` | `admin123` / `password123` terbaca oleh siapa pun yang mengakses repositori | Jangan jalankan seeder di production; ganti seluruh kata sandi default sebelum *go-live* |
+| SEC-07 | 🟠 Sedang | Agency dapat mengisi persentase komisinya sendiri hingga 100% dengan harga Rp1 | Pengajuan listing dengan `commission_rate=100` dan `price=1` diterima | Batasi rentang komisi sesuai SOP (mis. 1–5%) dan harga minimum; tampilkan peringatan saat admin memverifikasi |
+| SEC-08 | 🟠 Sedang | Jumlah berkas per listing tidak dibatasi | 5 kali update listing → berkas bertambah dari 3 menjadi 28 | Batasi total foto per listing (bukan hanya per kiriman form) |
+| SEC-09 | 🟡 Rendah | Header keamanan HTTP tidak ada | `X-Frame-Options`, `Content-Security-Policy`, `X-Content-Type-Options`, `Strict-Transport-Security`, `Referrer-Policy` semuanya kosong (rentan *clickjacking*) | Tambahkan middleware header keamanan, atau atur di Nginx |
+| SEC-10 | 🟡 Rendah | Email terdaftar dapat ditebak (*user enumeration*) | Lupa kata sandi membalas "Tidak ada pengguna dengan alamat email tersebut" untuk email yang tidak terdaftar | Gunakan pesan yang sama untuk email terdaftar maupun tidak |
+| SEC-11 | 🟡 Rendah | Konfigurasi `.env` belum siap production | `APP_DEBUG=true` (halaman error menampilkan *stack trace*); `SESSION_SECURE_COOKIE` belum diset | Production: `APP_ENV=production`, `APP_DEBUG=false`, `SESSION_SECURE_COOKIE=true`, wajib HTTPS |
+
+### C. Prioritas Perbaikan
+1. **Wajib sebelum *go-live*:** SEC-01, SEC-02, SEC-06, SEC-11.
+2. **Segera setelahnya:** SEC-03, SEC-04, SEC-05.
+3. **Perbaikan lanjutan:** SEC-07, SEC-08, SEC-09, SEC-10.
+
+---
+
+## 10. Lisensi & Hak Cipta
 Hak Cipta &copy; 2026 **GalleryProperty**. Dikembangkan untuk kemaslahatan transaksi properti keluarga muslim tanpa riba.
                                                                                                                
