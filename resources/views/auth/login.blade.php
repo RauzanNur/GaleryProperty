@@ -3,7 +3,7 @@
 
     <div class="mb-6">
         <h1 class="font-display text-2xl font-bold text-primary-950">Selamat datang kembali</h1>
-        <p class="text-sm text-gray-500 mt-1">Masuk untuk melanjutkan chat dengan agency dan mengelola akun Anda.</p>
+        <p class="text-sm text-gray-500 mt-1">Masuk untuk melihat katalog lebih lanjut.</p>
     </div>
 
     <!-- Session Status -->
@@ -23,8 +23,7 @@
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
+            <x-password-input id="password" class="mt-1"
                             name="password"
                             required autocomplete="current-password" />
 
