@@ -10,7 +10,9 @@
         <div>
             <h3 class="text-sm font-semibold text-gold-300 uppercase tracking-wider mb-4">Jelajahi</h3>
             <ul class="space-y-2 text-sm">
-                <li><a href="{{ route('catalog.index') }}" class="hover:text-white transition">Katalog Properti</a></li>
+                @unless (auth()->user()?->isAdmin())
+                    <li><a href="{{ route('catalog.index') }}" class="hover:text-white transition">Katalog Properti</a></li>
+                @endunless
                 @guest
                     {{-- Landing page hanya bisa diakses pengunjung yang belum login --}}
                     <li><a href="{{ url('/#cara-kerja') }}" class="hover:text-white transition">Cara Kerja</a></li>

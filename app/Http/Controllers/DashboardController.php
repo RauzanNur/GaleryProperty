@@ -7,6 +7,7 @@ use App\Models\BuyerLead;
 use App\Models\Commission;
 use App\Models\Conversation;
 use App\Models\PropertyProject;
+use App\Models\SupportConversation;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -25,6 +26,7 @@ class DashboardController extends Controller
                 ['label' => 'Agency menunggu verifikasi', 'value' => AgencyPartner::where('verification_status', 'pending')->count(), 'url' => route('admin.agency-partners.index', ['verification_status' => 'pending']), 'accent' => true],
                 ['label' => 'Lead baru', 'value' => BuyerLead::where('status', 'new_lead')->count(), 'url' => route('admin.buyer-leads.index', ['status' => 'new_lead'])],
                 ['label' => 'Komisi belum dibayar', 'value' => Commission::whereIn('status', ['pending', 'approved'])->count(), 'url' => route('admin.commissions.index')],
+                ['label' => 'Pesan bantuan belum dibaca', 'value' => SupportConversation::unreadConversationCountFor($user), 'url' => route('admin.support.index'), 'accent' => true],
             ];
             $actions = [
                 ['label' => 'Verifikasi listing', 'url' => route('admin.property-projects.index')],

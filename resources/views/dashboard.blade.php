@@ -27,7 +27,7 @@
     </section>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div class="grid grid-cols-1 sm:grid-cols-2 {{ count($cards) === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3' }} gap-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 {{ [5 => 'lg:grid-cols-3 xl:grid-cols-5', 4 => 'lg:grid-cols-4'][count($cards)] ?? 'lg:grid-cols-3' }} gap-5">
             @foreach ($cards as $card)
                 @php($tag = isset($card['url']) ? 'a' : 'div')
                 <{{ $tag }} @isset($card['url']) href="{{ $card['url'] }}" @endisset

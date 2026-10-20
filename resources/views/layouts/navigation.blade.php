@@ -14,6 +14,9 @@
     // Chat hanya untuk pembeli dan agency partner
     $canChat = $user && ($user->isBuyer() || $user->isAgencyPartner());
     $unreadChats = $canChat ? \App\Models\Conversation::unreadConversationCountFor($user) : 0;
+
+    // Bantuan (customer support): pembeli & agency chat dengan admin; admin membalas dari inbox
+    $unreadSupport = $user ? \App\Models\SupportConversation::unreadConversationCountFor($user) : 0;
 @endphp
 
 <nav x-data="{ open: false }" class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-cream-dark">
@@ -36,9 +39,11 @@
                         </x-nav-link>
                     @endauth
 
-                    <x-nav-link :href="route('catalog.index')" :active="request()->routeIs('catalog.*')">
-                        {{ __('Katalog') }}
-                    </x-nav-link>
+                    @unless ($user?->isAdmin())
+                        <x-nav-link :href="route('catalog.index')" :active="request()->routeIs('catalog.*')">
+                            {{ __('Katalog') }}
+                        </x-nav-link>
+                    @endunless
 
                     @if ($user?->isAgencyPartner())
                         <x-nav-link :href="route('agency.property-projects.index')" :active="request()->routeIs('agency.property-projects.*')">
@@ -53,11 +58,25 @@
                                 <span class="ms-1.5 inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full bg-rose-500 text-white text-[11px] font-bold">{{ $unreadChats }}</span>
                             @endif
                         </x-nav-link>
+
+                        <x-nav-link :href="route('support.show')" :active="request()->routeIs('support.*')">
+                            {{ __('Bantuan') }}
+                            @if ($unreadSupport)
+                                <span class="ms-1.5 inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full bg-rose-500 text-white text-[11px] font-bold">{{ $unreadSupport }}</span>
+                            @endif
+                        </x-nav-link>
                     @endif
 
                     @if ($user?->isAdmin())
                         <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
                             {{ __('Kelola Pengguna') }}
+                        </x-nav-link>
+
+                        <x-nav-link :href="route('admin.support.index')" :active="request()->routeIs('admin.support.*')">
+                            {{ __('Customer Support') }}
+                            @if ($unreadSupport)
+                                <span class="ms-1.5 inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full bg-rose-500 text-white text-[11px] font-bold">{{ $unreadSupport }}</span>
+                            @endif
                         </x-nav-link>
 
                         <div class="flex items-center">
@@ -144,9 +163,11 @@
                 </x-responsive-nav-link>
             @endauth
 
-            <x-responsive-nav-link :href="route('catalog.index')" :active="request()->routeIs('catalog.*')">
-                {{ __('Katalog') }}
-            </x-responsive-nav-link>
+            @unless ($user?->isAdmin())
+                <x-responsive-nav-link :href="route('catalog.index')" :active="request()->routeIs('catalog.*')">
+                    {{ __('Katalog') }}
+                </x-responsive-nav-link>
+            @endunless
 
             @if ($user?->isAgencyPartner())
                 <x-responsive-nav-link :href="route('agency.property-projects.index')" :active="request()->routeIs('agency.property-projects.*')">
@@ -158,11 +179,19 @@
                 <x-responsive-nav-link :href="route('chat.index')" :active="request()->routeIs('chat.*')">
                     {{ __('Chat') }}{{ $unreadChats ? " ({$unreadChats})" : '' }}
                 </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('support.show')" :active="request()->routeIs('support.*')">
+                    {{ __('Bantuan') }}{{ $unreadSupport ? " ({$unreadSupport})" : '' }}
+                </x-responsive-nav-link>
             @endif
 
             @if ($user?->isAdmin())
                 <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
                     {{ __('Kelola Pengguna') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('admin.support.index')" :active="request()->routeIs('admin.support.*')">
+                    {{ __('Customer Support') }}{{ $unreadSupport ? " ({$unreadSupport})" : '' }}
                 </x-responsive-nav-link>
 
                 @foreach ($adminMenu as $routePrefix => $label)
