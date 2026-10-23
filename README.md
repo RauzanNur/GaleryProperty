@@ -273,10 +273,13 @@ git clone https://github.com/RauzanNur/GalleryProperty.git
 cd GalleryProperty
 ```
 
-### Langkah 2: Instal Dependensi PHP
+### Langkah 2: Instal Dependensi PHP & Build Tampilan
 ```bash
 composer install
+npm install
+npm run build
 ```
+*(Tanpa `npm run build`, halaman tampil polos tanpa CSS. Jika masih polos padahal sudah build, hapus file `public/hot` sisa `npm run dev` yang tidak lagi berjalan.)*
 
 ### Langkah 3: Konfigurasi Environment & SQLite
 Salin file environment:
