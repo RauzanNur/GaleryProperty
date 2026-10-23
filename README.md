@@ -269,8 +269,8 @@ Untuk anggota tim yang baru mengklon repositori ini, ikuti langkah berikut:
 
 ### Langkah 1: Klon & Masuk Direktori
 ```bash
-git clone <repository-url>
-cd GaleryProperty
+git clone https://github.com/RauzanNur/GalleryProperty.git
+cd GalleryProperty
 ```
 
 ### Langkah 2: Instal Dependensi PHP
