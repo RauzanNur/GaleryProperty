@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\PropertyFileController;
 use App\Http\Controllers\Admin\PropertyProjectController;
 use App\Http\Controllers\Admin\SupportConversationController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Agency\AgencyProfileController;
+use App\Http\Controllers\Agency\CommissionController as AgencyCommissionController;
 use App\Http\Controllers\Agency\PropertyProjectController as AgencyPropertyProjectController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\ChatController;
@@ -52,8 +54,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/chat/{conversation}/messages', [ChatController::class, 'send'])->name('chat.send');
 });
 
-// Area Agency Partner: pengajuan listing
+// Area Agency Partner: profil agency dan pengajuan listing
 Route::middleware(['auth', 'verified', 'role:agency_partner'])->prefix('agency')->name('agency.')->group(function () {
+    Route::get('profile', [AgencyProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('profile', [AgencyProfileController::class, 'update'])->name('profile.update');
+    Route::get('commissions', [AgencyCommissionController::class, 'index'])->name('commissions.index');
+    Route::get('commissions/{commission}', [AgencyCommissionController::class, 'show'])->name('commissions.show');
     Route::resource('property-projects', AgencyPropertyProjectController::class)->except(['destroy']);
 });
 
@@ -65,7 +71,16 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
     Route::resource('property-files', PropertyFileController::class);
     Route::resource('buyer-leads', BuyerLeadController::class);
     Route::resource('digital-akads', DigitalAkadController::class);
-    Route::resource('commissions', CommissionController::class);
+
+    // Komisi per termin: diterbitkan otomatis dari akad, setiap transisi lewat tombol (tanpa form isian manual)
+    Route::get('commissions', [CommissionController::class, 'index'])->name('commissions.index');
+    Route::get('commissions/{commission}', [CommissionController::class, 'show'])->name('commissions.show');
+    Route::get('commissions/{commission}/invoice', [CommissionController::class, 'invoice'])->name('commissions.invoice');
+    Route::post('commissions/{commission}/mark-due', [CommissionController::class, 'markDue'])->name('commissions.mark-due');
+    Route::post('commissions/{commission}/issue-invoice', [CommissionController::class, 'issueInvoice'])->name('commissions.issue-invoice');
+    Route::post('commissions/{commission}/record-payment', [CommissionController::class, 'recordPayment'])->name('commissions.record-payment');
+    Route::post('commissions/{commission}/record-payout', [CommissionController::class, 'recordPayout'])->name('commissions.record-payout');
+    Route::post('commissions/{commission}/void', [CommissionController::class, 'void'])->name('commissions.void');
 
     // Verifikasi listing: satu-satunya jalan untuk menayangkan atau menarik listing dari katalog
     Route::get('listing-verifications', [ListingVerificationController::class, 'index'])->name('listing-verifications.index');

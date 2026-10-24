@@ -52,6 +52,10 @@
                         <x-nav-link :href="route('agency.property-projects.index')" :active="request()->routeIs('agency.property-projects.*')">
                             {{ __('Listing Saya') }}
                         </x-nav-link>
+
+                        <x-nav-link :href="route('agency.commissions.index')" :active="request()->routeIs('agency.commissions.*')">
+                            {{ __('Komisi Saya') }}
+                        </x-nav-link>
                     @endif
 
                     @if ($canChat)
@@ -132,6 +136,12 @@
                                 {{ __('Profile') }}
                             </x-dropdown-link>
 
+                            @if ($user->isAgencyPartner())
+                                <x-dropdown-link :href="route('agency.profile.edit')">
+                                    {{ __('Profil Agency') }}
+                                </x-dropdown-link>
+                            @endif
+
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
@@ -183,6 +193,10 @@
                 <x-responsive-nav-link :href="route('agency.property-projects.index')" :active="request()->routeIs('agency.property-projects.*')">
                     {{ __('Listing Saya') }}
                 </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('agency.commissions.index')" :active="request()->routeIs('agency.commissions.*')">
+                    {{ __('Komisi Saya') }}
+                </x-responsive-nav-link>
             @endif
 
             @if ($canChat)
@@ -228,6 +242,12 @@
                     <x-responsive-nav-link :href="route('profile.edit')">
                         {{ __('Profile') }}
                     </x-responsive-nav-link>
+
+                    @if ($user->isAgencyPartner())
+                        <x-responsive-nav-link :href="route('agency.profile.edit')">
+                            {{ __('Profil Agency') }}
+                        </x-responsive-nav-link>
+                    @endif
 
                     <!-- Authentication -->
                     <form method="POST" action="{{ route('logout') }}">
