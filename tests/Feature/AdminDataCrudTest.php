@@ -120,15 +120,7 @@ class AdminDataCrudTest extends TestCase
 
         $project = PropertyProject::where('slug', 'cluster-uji-coba')->firstOrFail();
 
-        // Belum ada PKS / surat kuasa developer: tidak bisa ditayangkan
-        $this->actingAs($this->admin)->put(route('admin.property-projects.update', $project), [
-            ...$payload,
-            'is_verified' => '1',
-        ])->assertSessionHasErrors('is_verified');
-        $this->assertFalse($project->fresh()->is_verified);
-
-        $project->files()->create(['file_path' => 'properties/legal/pks.pdf', 'file_type' => 'legal_doc']);
-
+        // Status tayang tidak bisa diubah lewat form Ubah Data (hanya lewat menu Verifikasi Listing)
         $this->actingAs($this->admin)->put(route('admin.property-projects.update', $project), [
             ...$payload,
             'title' => 'Cluster Uji Ganti',
@@ -137,7 +129,7 @@ class AdminDataCrudTest extends TestCase
 
         $project->refresh();
         $this->assertSame('cluster-uji-ganti', $project->slug);
-        $this->assertTrue($project->is_verified);
+        $this->assertFalse($project->is_verified);
 
         $this->actingAs($this->admin)->delete(route('admin.property-projects.destroy', $project));
         $this->assertSoftDeleted($project);

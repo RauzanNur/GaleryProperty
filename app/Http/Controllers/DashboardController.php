@@ -22,14 +22,14 @@ class DashboardController extends Controller
 
         if ($user->isAdmin()) {
             $cards = [
-                ['label' => 'Listing menunggu verifikasi', 'value' => PropertyProject::where('is_verified', false)->count(), 'url' => route('admin.property-projects.index'), 'accent' => true],
+                ['label' => 'Listing menunggu verifikasi', 'value' => PropertyProject::where('is_verified', false)->count(), 'url' => route('admin.listing-verifications.index'), 'accent' => true],
                 ['label' => 'Agency menunggu verifikasi', 'value' => AgencyPartner::where('verification_status', 'pending')->count(), 'url' => route('admin.agency-partners.index', ['verification_status' => 'pending']), 'accent' => true],
                 ['label' => 'Lead baru', 'value' => BuyerLead::where('status', 'new_lead')->count(), 'url' => route('admin.buyer-leads.index', ['status' => 'new_lead'])],
                 ['label' => 'Komisi belum dibayar', 'value' => Commission::whereIn('status', ['pending', 'approved'])->count(), 'url' => route('admin.commissions.index')],
                 ['label' => 'Pesan bantuan belum dibaca', 'value' => SupportConversation::unreadConversationCountFor($user), 'url' => route('admin.support.index'), 'accent' => true],
             ];
             $actions = [
-                ['label' => 'Verifikasi listing', 'url' => route('admin.property-projects.index')],
+                ['label' => 'Verifikasi listing', 'url' => route('admin.listing-verifications.index')],
                 ['label' => 'Terbitkan akad', 'url' => route('admin.digital-akads.create')],
                 ['label' => 'Kelola pengguna', 'url' => route('admin.users.index')],
             ];

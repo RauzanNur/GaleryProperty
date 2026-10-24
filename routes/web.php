@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AgencyPartnerController;
 use App\Http\Controllers\Admin\BuyerLeadController;
 use App\Http\Controllers\Admin\CommissionController;
 use App\Http\Controllers\Admin\DigitalAkadController;
+use App\Http\Controllers\Admin\ListingVerificationController;
 use App\Http\Controllers\Admin\PropertyFileController;
 use App\Http\Controllers\Admin\PropertyProjectController;
 use App\Http\Controllers\Admin\SupportConversationController;
@@ -65,6 +66,12 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
     Route::resource('buyer-leads', BuyerLeadController::class);
     Route::resource('digital-akads', DigitalAkadController::class);
     Route::resource('commissions', CommissionController::class);
+
+    // Verifikasi listing: satu-satunya jalan untuk menayangkan atau menarik listing dari katalog
+    Route::get('listing-verifications', [ListingVerificationController::class, 'index'])->name('listing-verifications.index');
+    Route::get('listing-verifications/{propertyProject}', [ListingVerificationController::class, 'show'])->name('listing-verifications.show');
+    Route::post('listing-verifications/{propertyProject}/approve', [ListingVerificationController::class, 'approve'])->name('listing-verifications.approve');
+    Route::post('listing-verifications/{propertyProject}/unpublish', [ListingVerificationController::class, 'unpublish'])->name('listing-verifications.unpublish');
 
     // Inbox customer support
     Route::get('support', [SupportConversationController::class, 'index'])->name('support.index');

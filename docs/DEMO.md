@@ -78,7 +78,7 @@ Tujuan: menunjukkan peran admin sebagai penjaga kualitas dan kepatuhan syariah.
 | # | Langkah | Yang ditunjukkan |
 | :-: | :--- | :--- |
 | 1 | Login sebagai admin | Dashboard admin: listing dan agency yang menunggu verifikasi, lead baru, komisi belum dibayar. |
-| 2 | **Kelola Data → Projek Properti**, buka listing yang diajukan agency (demo A3), klik **Ubah**, centang **Verifikasi & tayangkan di katalog**, simpan | Listing kini tayang di katalog. Coba juga pada projek baru tanpa Dokumen Legalitas: ditolak. |
+| 2 | Menu **Verifikasi Listing** → tab *Menunggu Verifikasi*, klik **Tinjau** pada listing yang diajukan agency (demo A3), periksa daftar kelengkapan, lalu klik tombol **Verifikasi & Tayangkan** | Listing kini tayang di katalog. Pada listing tanpa Dokumen Legalitas, tombolnya nonaktif. Listing yang sudah tayang bisa ditarik lewat tombol **Batalkan Penayangan**. |
 | 3 | **Kelola Data → Leads Pembeli** | Lead dari chat demo A2 muncul dengan catatan *"Lead otomatis dari chat website."* |
 | 4 | **Kelola Data → Agency Partner**, coba hapus **PT Berkah Properti Syariah** | Ditolak karena agency masih memiliki riwayat komisi. |
 | 5 | **Kelola Data → Akad Digital**, buka salah satu akad | Nomor akad otomatis `AKAD/YYYYMM/XXXX` dan status tanda tangan 3 pihak. |
@@ -107,8 +107,8 @@ Gunakan jendela biasa untuk **admin** dan **pembeli**, serta jendela incognito u
 
 ### Langkah 2 — Admin memverifikasi dan menayangkan *(jendela biasa, login admin)*
 1. **Dashboard**: kartu *Listing menunggu verifikasi* bertambah.
-2. **Kelola Data → Projek Properti** → **Griya Tahfidz Residence Bekasi** → **Ubah**.
-3. Centang **Verifikasi & tayangkan di katalog** → **Simpan Perubahan**.
+2. Menu **Verifikasi Listing** → tab *Menunggu Verifikasi* → **Griya Tahfidz Residence Bekasi** → **Tinjau**.
+3. Periksa daftar kelengkapan dan buka PKS-nya, lalu klik tombol **Verifikasi & Tayangkan**.
 4. Logout.
 
 ### Langkah 3 — Calon pembeli baru mendaftar dan bertanya *(jendela biasa)*

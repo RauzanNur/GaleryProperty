@@ -17,6 +17,9 @@
 
     // Bantuan (customer support): pembeli & agency chat dengan admin; admin membalas dari inbox
     $unreadSupport = $user ? \App\Models\SupportConversation::unreadConversationCountFor($user) : 0;
+
+    // Admin: jumlah listing yang menunggu verifikasi
+    $pendingListings = $user?->isAdmin() ? \App\Models\PropertyProject::where('is_verified', false)->count() : 0;
 @endphp
 
 <nav x-data="{ open: false }" class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-cream-dark">
@@ -70,6 +73,13 @@
                     @if ($user?->isAdmin())
                         <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
                             {{ __('Kelola Pengguna') }}
+                        </x-nav-link>
+
+                        <x-nav-link :href="route('admin.listing-verifications.index')" :active="request()->routeIs('admin.listing-verifications.*')">
+                            {{ __('Verifikasi Listing') }}
+                            @if ($pendingListings)
+                                <span class="ms-1.5 inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full bg-amber-500 text-white text-[11px] font-bold">{{ $pendingListings }}</span>
+                            @endif
                         </x-nav-link>
 
                         <x-nav-link :href="route('admin.support.index')" :active="request()->routeIs('admin.support.*')">
@@ -188,6 +198,10 @@
             @if ($user?->isAdmin())
                 <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
                     {{ __('Kelola Pengguna') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('admin.listing-verifications.index')" :active="request()->routeIs('admin.listing-verifications.*')">
+                    {{ __('Verifikasi Listing') }}{{ $pendingListings ? " ({$pendingListings})" : '' }}
                 </x-responsive-nav-link>
 
                 <x-responsive-nav-link :href="route('admin.support.index')" :active="request()->routeIs('admin.support.*')">

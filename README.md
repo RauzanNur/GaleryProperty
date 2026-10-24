@@ -108,6 +108,7 @@ Satu user story untuk setiap MVP (US-01 sampai US-05), ditambah story sesuai [Al
 6. Setiap projek hanya memiliki satu berkas utama. Menandai berkas baru sebagai utama otomatis melepas status utama berkas lain di projek yang sama.
 7. Saat berkas diganti atau dihapus, file fisik lamanya ikut dihapus dari penyimpanan.
 8. Projek hanya bisa diverifikasi dan ditayangkan di katalog jika sudah memiliki minimal satu berkas **Dokumen Legalitas** (PKS / surat kuasa developer).
+9. Verifikasi dilakukan di halaman khusus **Verifikasi Listing**: admin meninjau data, berkas, dan daftar kelengkapan, lalu menekan tombol **Verifikasi & Tayangkan**. Listing yang sudah tayang dapat ditarik kembali lewat tombol **Batalkan Penayangan**. Status tayang tidak dapat diubah dari form Ubah Data.
 
 #### US-03 — Registrasi Calon Pembeli
 > Sebagai **Admin**, saya ingin mencatat profil kebutuhan calon pembeli dan melacak status prospeknya, agar leads yang kredibel dapat ditindaklanjuti oleh agency.
